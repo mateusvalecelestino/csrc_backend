@@ -1,5 +1,5 @@
 // # -> Arq. de config da db
-import 'dotenv/config'; // Importa o dotenv
+require('dotenv').config(); // Importa o dotenv
 module.exports = {
     dialect: 'mysql',
     host: process.env.DATABASE_HOST,
