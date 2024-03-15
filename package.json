@@ -4,7 +4,7 @@
   "description": "A rest API for hospital management system CSRC.",
   "main": "index.js",
   "scripts": {
-    "dev": ""
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "Mateus Vale Celestino Nelito",
