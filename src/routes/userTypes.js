@@ -1,13 +1,9 @@
 import {Router} from "express";
-import UserTypesController from '../controllers/UserTypes'; // Importa o controller de userTypes
+import userTypesController from '../controllers/UserTypes'; // Importa o objecto controller de UserTypes
 const router = new Router; // Cria o router
 
 // Rotas
-router.get('/', (req, res) => {
-    res.status(200).json({
-        status: true,
-        message: "api running | user-types route"
-    })
-})
+// UserTypes
+router.get('/', userTypesController.get); // getAll | get
 
-export default router;
+export default router; // Exporta o router
