@@ -1,0 +1,12 @@
+{
+  "name": "csrc_rest_api",
+  "version": "1.0.0",
+  "description": "A rest API for hospital management system CSRC.",
+  "main": "index.js",
+  "scripts": {
+    "dev": ""
+  },
+  "keywords": [],
+  "author": "Mateus Vale Celestino Nelito",
+  "license": "ISC"
+}
