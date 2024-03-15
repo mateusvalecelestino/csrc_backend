@@ -7,11 +7,8 @@ module.exports = {
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
-    timezone:'Africa/Luanda',
+    timezone: 'Africa/Luanda',
     define: {
-        timestamps: true // Define o registo automático de data de criação e alteração de items do banco
+        timestamps: true, // Define o registo automático de data de criação e alteração de items do banco
     },
-    dialectOptions: {
-        timezone:'Africa/Luanda',
-    }
-}
+};
