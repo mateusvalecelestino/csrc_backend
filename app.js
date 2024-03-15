@@ -1,4 +1,6 @@
 import express from 'express';
+import userTypes from "./src/routes/userTypes";
+
 class App {
     constructor() {
         this.app = express();
@@ -7,12 +9,12 @@ class App {
     }
 
     middlewares(){
-        this.app.use(express.urlencoded({extended: true})); // Para receber params na url
+        this.app.use(express.urlencoded({extended: true})); // Habilita a recepção de params na url
         this.app.use(express.json()); // habilita o uso de json
     }
 
     routes(){
-
+        this.app.use('/user-types', userTypes); // rota para gerir tipos de usuários
     }
 }
 
