@@ -1,11 +1,11 @@
 import Sequelize, { Model, DataTypes } from "sequelize";
 
 export default class User extends Model{
-    // static associate(models) {
-    //     this.belongsTo(models.UserType, { foreignKey: 'user_type', as: 'type' });
-    //     this.hasMany(models.User, { foreignKey: 'created_by', as: 'createdUsers' });
-    //     this.hasMany(models.User, { foreignKey: 'updated_by', as: 'updatedUsers' });
-    // }
+    static associate(models) {
+        this.belongsTo(models.UserType, { foreignKey: 'user_type' });
+        this.hasMany(models.User, { foreignKey: 'created_by' });
+        this.hasMany(models.User, { foreignKey: 'updated_by' });
+    }
 
     static init(sequelize){
         // Chama o método init da classe pai para definir os campos do modelo
