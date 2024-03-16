@@ -1,5 +1,6 @@
 import Sequelize, { Model } from "sequelize";
 import UserType from "./UserType";
+import bcryptjs from 'bcryptjs';
 
 export default class User extends Model{
     // Classe representando o modelo User
@@ -42,7 +43,7 @@ export default class User extends Model{
                     isEmail: { msg: "email de utilizador inválido." }
                 }
             },
-            password_hash: { type: Sequelize.STRING, allowNull:false },
+            password_hash: { type: Sequelize.STRING, allowNull:false, defaultValue: "" },
             password: {
                 type:Sequelize.VIRTUAL, // Não existe no banco de dados
                 allowNull: false,
@@ -92,6 +93,11 @@ export default class User extends Model{
         User.belongsTo(UserType, { foreignKey: 'type', as: 'userType' });
         User.belongsTo(User, { as: 'Creator', foreignKey: 'created_by' });
         User.belongsTo(User, { as: 'Updater', foreignKey: 'updated_by' });
+
+        this.addHook('beforeSave', async user => {
+            // noinspection JSUnresolvedReference
+            user.password_hash = await bcryptjs.hash(user.password, 8)
+        })
         return this;
     }
 }
