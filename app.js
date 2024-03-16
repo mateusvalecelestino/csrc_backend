@@ -1,6 +1,7 @@
 import express from 'express';
-import userTypes from "./src/routes/userTypes";
 require('dotenv').config(); // Importa o dotenv
+import './src/database/connection'; // Importa a conexão com|para os models
+import userTypes from "./src/routes/userTypes";
 
 class App {
     constructor() {
@@ -10,7 +11,9 @@ class App {
     }
 
     middlewares(){
+        // noinspection JSCheckFunctionSignatures
         this.app.use(express.urlencoded({extended: true})); // Habilita a recepção de params na url
+        // noinspection JSCheckFunctionSignatures
         this.app.use(express.json()); // habilita o uso de json
     }
 
