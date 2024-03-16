@@ -1,12 +1,12 @@
 // Classe de status code Http
 class HttpStatusCodes {
     constructor() {
-        this.HTTP_STATUS_OK = 200;
-        this.HTTP_STATUS_CREATED = 201;
-        this.HTTP_STATUS_BAD_REQUEST = 400;
-        this.HTTP_STATUS_UNAUTHORIZED = 401;
-        this.HTTP_STATUS_NOT_FOUND = 404;
-        this.HTTP_STATUS_SERVER_ERROR = 500;
+        this.OK = 200;
+        this.CREATED = 201;
+        this.BAD_REQUEST = 400;
+        this.UNAUTHORIZED = 401;
+        this.NOT_FOUND = 404;
+        this.SERVER_ERROR = 500;
     }
 }
 

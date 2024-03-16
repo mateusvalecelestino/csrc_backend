@@ -7,7 +7,7 @@ class UserTypes{
             const userTypes = await  UserType.findAll({ attributes: ['user_types_id', 'name', 'desc'] });
             res.json(userTypes);
         }catch (e) {
-            res.status(httpStatusCode.HTTP_STATUS_SERVER_ERROR).json({success: false, message: "Erro ao carregar tipos de usuários. Tente mais tarde!"})
+            res.status(httpStatusCode.SERVER_ERROR).json({success: false, message: "Erro ao carregar tipos de usuários. Tente mais tarde!"})
         }
     }
 }
