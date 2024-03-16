@@ -18,7 +18,7 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       },
-      active: { type: Sequelize.TINYINT, allowNull: false, default: 1 },
+      active: { type: Sequelize.TINYINT, allowNull: false, defaultValue: 1 },
       // FK de created by
       created_by: {
         type: Sequelize.INTEGER,
