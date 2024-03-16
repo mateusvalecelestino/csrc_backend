@@ -1,8 +1,10 @@
 import httpStatusCode from "../utils/HttpStatusCode";
+import User from "../models/User";
 class Users {
     async get(req, res){
         try {
-            res.json({success: true, message: "get funcionando..."})
+            const users = await User.findAll();
+            return res.json(users);
         }catch (e) {
             res.status(httpStatusCode.SERVER_ERROR).json({ success: false, message: e.message })
         }
