@@ -1,16 +1,19 @@
 import Sequelize, { Model } from "sequelize"; // Import do Sequelize e o model
 
 export default class UserType extends Model{
-    // Recebe a conexão com o banco (sequelize = connection)
+    // Classe representando o modelo UserType
+
+    // Método estático para inicializar o modelo UserType
     static init(sequelize){
+        // Chama o método init da classe pai para definir os campos do modelo
         super.init({
             // Definição dos campos do model
             name: Sequelize.STRING(20),
             desc: Sequelize.STRING(30),
             home: Sequelize.STRING
         }, {
-            sequelize,
+            sequelize, // Opção para passar a conexão com o banco de dados
         });
-        return this;
+        return this; // Retorna a própria classe para permitir encadeamento de métodos
     }
 }
