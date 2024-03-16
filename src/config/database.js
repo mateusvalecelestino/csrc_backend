@@ -1,5 +1,5 @@
 // # -> Arq. de config da db
-require('dotenv').config(); // Importa o dotenv
+require('dotenv').config();
 module.exports = {
     dialect: 'mysql',
     host: process.env.DATABASE_HOST,
@@ -7,8 +7,6 @@ module.exports = {
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
-    timezone: 'Africa/Luanda',
-    define: {
-        timestamps: true, // Define o registo automático de data de criação e alteração de items do banco
-    },
+    define: { timestamps: true, underscored: true, underscoredAll: true },
+    timezone: 'Africa/Luanda'
 };

@@ -1,5 +1,6 @@
 import express from 'express';
 import userTypes from "./src/routes/userTypes";
+require('dotenv').config(); // Importa o dotenv
 
 class App {
     constructor() {
