@@ -1,10 +1,11 @@
 import Sequelize, { Model, DataTypes } from "sequelize";
 
 export default class User extends Model{
+    // Definição as associações (joins)
     static associate(models) {
-        this.belongsTo(models.UserType, { foreignKey: 'user_type' });
-        this.hasMany(models.User, { foreignKey: 'created_by' });
-        this.hasMany(models.User, { foreignKey: 'updated_by' });
+        this.belongsTo(models.UserType, { as: "type", foreignKey: 'user_type' }); // Assoc. com a table user_type
+        this.hasMany(models.User, { as: "creator", foreignKey: 'created_by' }); // Assoc. com a própria table
+        this.hasMany(models.User, { as: "updater", foreignKey: 'updated_by' }); // Assoc. com a própria table
     }
 
     static init(sequelize){
