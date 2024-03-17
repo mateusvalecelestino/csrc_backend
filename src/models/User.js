@@ -65,7 +65,13 @@ export default class User extends Model{
                     isInt: { msg: "user_type inválido." }
                 }
             },
-            active: { type: DataTypes.TINYINT, defaultValue: 1 },
+            active: {
+                type: DataTypes.TINYINT,
+                defaultValue: 1,
+                validate: {
+                    isInt: { msg: "active inválido." }
+                }
+            },
             created_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
@@ -86,7 +92,6 @@ export default class User extends Model{
 
         // Cria o hash da senha antes de salvar no banco
         this.addHook('beforeSave', async user => {
-            // noinspection JSUnresolvedReference
             user.password_hash = await bcrypt.hash(user.password, 8);
         })
 
