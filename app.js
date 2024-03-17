@@ -1,5 +1,4 @@
 import express from 'express';
-require('dotenv').config(); // Importa o dotenv
 import './src/database/connection'; // Importa a conexão com|para os models
 import userTypes from "./src/routes/userTypes";
 import users from "./src/routes/users";
