@@ -22,11 +22,15 @@ class Users {
         }
     }
 
-    async post(req, post){
+    async post(req, res){
         try {
-            post.json({success: true, message: "post funcionando..."})
+            const newUser = await User.create(req.body);
+            return res.status(httpStatusCode.CREATED).json({ success: true, user: newUser });
         }catch (e) {
-            post.status(httpStatusCode.SERVER_ERROR).json({ success: false, message: e.message })
+            // Trabalhar a messages de erro
+            return res.status(httpStatusCode.BAD_REQUEST).json({
+               errors: e.errors.map(err => err.message)
+            });
         }
     }
 }
