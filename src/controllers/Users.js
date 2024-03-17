@@ -85,22 +85,6 @@ class Users {
             });
         }
     }
-
-    async delete(req, res) {
-        try {
-            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id inválido." });
-            const user = await User.findByPk(req.params.id);
-            if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "utilizador não existe." });
-            await user.destroy();
-            return res.status(httpStatusCode.NO_CONTENT).json({});
-        } catch (e) {
-            // Trabalhar a messages de erro
-            console.log(e);
-            return res.status(httpStatusCode.BAD_REQUEST).json({
-                errors: e.errors.map(err => err.message)
-            });
-        }
-    }
 }
 
 export default new Users; // exporta o objecto da classe

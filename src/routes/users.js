@@ -8,7 +8,4 @@ router.get('/', auth, admin, userController.index);
 router.get('/:id', auth, admin, userController.show);
 router.post('/create', auth, admin, userController.create);
 router.put('/:id', auth, admin, userController.put);
-router.delete('/:id', auth, admin, userController.delete);
-
-
 export default router; // Exporta o router
