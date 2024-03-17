@@ -33,13 +33,7 @@ export default class User extends Model{
                 type: DataTypes.STRING,
                 defaultValue: "",
                 unique: { msg: "email já existe." },
-                validate: {
-                    len: {
-                        args: [3, 255],
-                        msg: "email deve ter entre 3 e 255 caracteres."
-                    },
-                    isEmail: { msg: "email inválido." }
-                }
+                validate: { isEmail: { msg: "email inválido." } }
             },
             password_hash: {
                 type: DataTypes.STRING,
@@ -49,43 +43,31 @@ export default class User extends Model{
                 type: DataTypes.VIRTUAL, // Não existe no banco
                 defaultValue: "",
                 validate: {
-                    len: {
-                        args: [8, 255],
-                        msg: "password deve ter entre 8 e 255 caracteres."
-                    },
                     is: {
-                        args: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,64})/g,
-                        msg: "password deve possuir no mínimo uma letra minúscula, uma maiúscula, um número e um caracter especial."
+                        args: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,255})/g,
+                        msg: "password deve ter no mínimo 8 caracteres, incluindo pelo menos uma letra minúscula, uma letra maiúscula, um número, um caractere especial e deve ter no máximo 255 caracteres."
                     },
                 }
             },
             user_type: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: {
-                    isInt: { msg: "user_type inválido." }
-                }
+                validate: { isInt: { msg: "user_type inválido." } }
             },
             active: {
                 type: DataTypes.TINYINT,
                 defaultValue: 1,
-                validate: {
-                    isInt: { msg: "active inválido." }
-                }
+                validate: { isInt: { msg: "active inválido." } }
             },
             created_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: {
-                    isInt: { msg: "created_by inválido." }
-                }
+                validate: { isInt: { msg: "created_by inválido." } }
             },
             updated_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: {
-                    isInt: { msg: "updated_by inválido." }
-                }
+                validate: { isInt: { msg: "updated_by inválido." } }
             },
         }, {
             sequelize,
