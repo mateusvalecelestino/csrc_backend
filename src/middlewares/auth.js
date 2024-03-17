@@ -2,6 +2,7 @@ import httpStatusCode from "../utils/HttpStatusCode";
 import jwt from "jsonwebtoken";
 import 'dotenv/config' // Importa o dotenv
 
+// Middleware para verificar se o token do usuário é válido
 export default (req, res, next) => {
     const { authorization } = req.headers; // Guarda o token de headers
 
