@@ -5,7 +5,7 @@ module.exports = {
   // Realiza a migration
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('users', {
-      users_id: {
+      id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
@@ -29,7 +29,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'user_types',
-          key: 'user_types_id'
+          key: 'id'
         },
         onDelete: 'RESTRICT'
       },
@@ -43,7 +43,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'users',
-          key: 'users_id',
+          key: 'id',
           onDelete: 'RESTRICT'
         }
       },
@@ -52,7 +52,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'users',
-          key: 'users_id',
+          key: 'id',
           onDelete: 'RESTRICT'
         }
       },
