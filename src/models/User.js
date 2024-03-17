@@ -1,5 +1,6 @@
 import Sequelize, { Model, DataTypes } from "sequelize";
 import bcrypt from 'bcryptjs';
+import {password} from "../config/database";
 
 export default class User extends Model{
     // Definição as associações (joins)
@@ -77,8 +78,12 @@ export default class User extends Model{
         this.addHook('beforeSave', async user => {
             user.password_hash = await bcrypt.hash(user.password, 8);
         })
-
         return this;
+    }
+
+    // Verifica se a senha enviada pelo usuário bate com a hash
+    isValidPassword(password) {
+        return bcrypt.compare(password, this.password_hash)
     }
 }
 /*
