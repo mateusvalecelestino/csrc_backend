@@ -10,7 +10,6 @@ export default class UserType extends Model{
         // Chama o método init da classe pai para definir os campos do modelo
         super.init({
             // Definição dos campos do model
-            user_types_id: { type: Sequelize.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true },
             name: Sequelize.STRING(20),
             desc: Sequelize.STRING(30),
             home: Sequelize.STRING

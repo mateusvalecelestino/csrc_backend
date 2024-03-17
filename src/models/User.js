@@ -12,7 +12,6 @@ export default class User extends Model{
         // Chama o método init da classe pai para definir os campos do modelo
         super.init({
             // Definição dos campos do model
-            users_id: { type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true },
             name: DataTypes.STRING(30),
             email: DataTypes.STRING,
             password_hash: DataTypes.STRING,
