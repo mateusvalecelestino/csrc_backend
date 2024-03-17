@@ -6,5 +6,7 @@ router.get('/', userController.index);
 router.get('/:id', userController.show);
 router.post('/create', userController.create);
 router.put('/:id', userController.put);
+router.delete('/:id', userController.delete);
+
 
 export default router; // Exporta o router

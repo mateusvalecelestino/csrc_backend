@@ -84,5 +84,26 @@ class Users {
             });
         }
     }
+
+    async delete(req, res){
+        try {
+
+            if(!req.params.id || !/^\d+$/.test(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({
+                success: false, message: "id inválido!"
+            });
+            const user = await User.findByPk(req.params.id);
+            if(!user) return res.status(httpStatusCode.BAD_REQUEST).json({
+                success: false, message: "utilizador não existe!"
+            })
+            await user.destroy();
+            return res.status(httpStatusCode.CREATED).json({ success: true, message: "utilizador excluido com sucesso!" });
+        }catch (e) {
+            // Trabalhar a messages de erro
+            console.log(e);
+            return res.status(httpStatusCode.BAD_REQUEST).json({
+                errors: e.errors.map(err => err.message)
+            });
+        }
+    }
 }
 export default new Users; // exporta o objecto da classe
