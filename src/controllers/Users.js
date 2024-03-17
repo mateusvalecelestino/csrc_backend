@@ -8,6 +8,7 @@ class Users {
         try {
             const users = await User.findAll({
                 attributes: ['id', 'name', 'email'], // Define os campos da tabela da table main
+                order: [['id', 'DESC']],
                 // Define as associações (joins)
                 include: [
                     // Associação com model user_types
