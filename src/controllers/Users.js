@@ -5,14 +5,14 @@ class Users {
     async get(req, res){
         try {
             const users = await User.findAll({
-                    attributes: ['users_id', 'name', 'email'], // Define os campos da tabela da table main
+                    attributes: ['id', 'name', 'email'], // Define os campos da tabela da table main
                     // Define as associações (joins)
                     include: [
                         // Associação com model user_types
                         {
                             model: UserType,
                             as: "type", // Referência o alias definido na assoc.
-                            attributes: ['user_types_id', 'name'] // Define os campos a serem recuperados de user_types
+                            attributes: ['id', 'name'] // Define os campos a serem recuperados de user_types
                         }
                     ],
             });
