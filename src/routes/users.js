@@ -4,7 +4,8 @@ const router = new Router; // Cria o router
 
 // Rotas
 // UserTypes
-router.get('/', userController.get); // create
-router.post('/create', userController.post); // create
+router.get('/', userController.index); // getAll
+router.get('/:id', userController.show) // getUser
+router.post('/create', userController.create); // create
 
 export default router; // Exporta o router

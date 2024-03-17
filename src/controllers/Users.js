@@ -2,7 +2,7 @@ import httpStatusCode from "../utils/HttpStatusCode";
 import User from "../models/User";
 import UserType from "../models/UserType";
 class Users {
-    async get(req, res){
+    async index(req, res){
         try {
             const users = await User.findAll({
                     attributes: ['id', 'name', 'email'], // Define os campos da tabela da table main
@@ -22,7 +22,36 @@ class Users {
         }
     }
 
-    async post(req, res){
+    async show(req, res){
+        try {
+            const {id} = req.params;
+            const user = await User.findByPk(id,{
+                attributes: ['id', 'name', 'email', 'created_at', 'updated_at'],
+                include: [
+                    {
+                        model: UserType,
+                        as: "type",
+                        attributes: ['id', 'name']
+                    },
+                    {
+                        model: User,
+                        as: "creator",
+                        attributes: ['id', 'name']
+                    },
+                    {
+                        model: User,
+                        as: "updater",
+                        attributes: ['id', 'name']
+                    }
+                ],
+            });
+            res.json(user);
+        }catch (e) {
+            res.status(httpStatusCode.SERVER_ERROR).json({ success: false, message: e.message })
+        }
+    }
+
+    async create(req, res){
         try {
             const newUser = await User.create(req.body);
             return res.status(httpStatusCode.CREATED).json({ success: true, user: newUser });

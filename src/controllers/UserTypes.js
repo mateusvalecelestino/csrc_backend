@@ -1,7 +1,7 @@
 import httpStatusCode from "../utils/HttpStatusCode";
 import UserType from "../models/UserType";
 class UserTypes{
-    async get(req, res){
+    async index(req, res){
         try {
             // Carrega todos os tipos de usuários, apenas os campos passados como attributes
             const userTypes = await  UserType.findAll({ attributes: ['user_types_id', 'name', 'desc'] });
