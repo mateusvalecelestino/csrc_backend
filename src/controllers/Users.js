@@ -61,7 +61,8 @@ class Users {
     async create(req, res) {
         try {
             const user = await User.create(req.body);
-            return res.status(httpStatusCode.CREATED).json({ user });
+            const {id, name, email, user_type, created_by} = user;
+            return res.status(httpStatusCode.CREATED).json({ user: {id, name, email, user_type, created_by} });
         } catch (e) {
             // Trabalhar a messages de erro
             return res.status(httpStatusCode.BAD_REQUEST).json({
@@ -76,7 +77,8 @@ class Users {
             const user = await User.findByPk(req.params.id);
             if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "utilizador não existe." });
             await user.update(req.body);
-            return res.json({ user });
+            const {id, name, email, user_type, updated_by} = user;
+            return res.json({ user: {id, name, email, user_type, updated_by} });
         } catch (e) {
             // Trabalhar a messages de erro
             console.log(e);
