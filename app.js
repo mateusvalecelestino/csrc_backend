@@ -11,14 +11,14 @@ class App {
         this.routes();
     }
 
-    middlewares(){
+    middlewares() {
         // noinspection JSCheckFunctionSignatures
         this.app.use(express.urlencoded({extended: true})); // Habilita a recepção de params na url
         // noinspection JSCheckFunctionSignatures
         this.app.use(express.json()); // habilita o uso de json
     }
 
-    routes(){
+    routes() {
         this.app.use('/user-types', userTypes); // rota para gerir tipos de usuários
         this.app.use('/users', users); // rota para gerir usuários
         this.app.use('/tokens', tokens); // rota para gerir tokens

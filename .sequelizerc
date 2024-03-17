@@ -1,5 +1,5 @@
 // # -> Arq. de config do sequelize
-const { resolve} = require('path'); // Importa o resolve do express, para dir.
+const {resolve} = require('path'); // Importa o resolve do express, para dir.
 // Configs
 module.exports = {
     config: resolve(__dirname, 'src', 'config', 'database.js'), // Define o dir. do arq. de config da db

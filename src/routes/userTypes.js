@@ -6,6 +6,6 @@ const router = new Router; // Cria o router
 
 // Rotas
 // UserTypes
-router.get('/', auth, admin , userTypesController.index); // getAll | index
+router.get('/', auth, admin, userTypesController.index); // getAll | index
 
 export default router; // Exporta o router

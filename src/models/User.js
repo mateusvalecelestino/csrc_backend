@@ -1,16 +1,16 @@
-import Sequelize, { Model, DataTypes } from "sequelize";
+import {DataTypes, Model} from "sequelize";
 import bcrypt from 'bcryptjs';
 import {password} from "../config/database";
 
-export default class User extends Model{
+export default class User extends Model {
     // Definição as associações (joins)
     static associate(models) {
-        this.belongsTo(models.UserType, { as: "type", foreignKey: 'user_type' }); // Assoc. com a table user_type
-        this.hasMany(models.User, { as: "creator", foreignKey: 'created_by' }); // Assoc. com a própria table
-        this.hasMany(models.User, { as: "updater", foreignKey: 'updated_by' }); // Assoc. com a própria table
+        this.belongsTo(models.UserType, {as: "type", foreignKey: 'user_type'}); // Assoc. com a table user_type
+        this.hasMany(models.User, {as: "creator", foreignKey: 'created_by'}); // Assoc. com a própria table
+        this.hasMany(models.User, {as: "updater", foreignKey: 'updated_by'}); // Assoc. com a própria table
     }
 
-    static init(sequelize){
+    static init(sequelize) {
         // Chama o método init da classe pai para definir os campos do modelo
         // noinspection SpellCheckingInspection
         super.init({
@@ -33,8 +33,8 @@ export default class User extends Model{
             email: {
                 type: DataTypes.STRING,
                 defaultValue: "",
-                unique: { msg: "email já existe." },
-                validate: { isEmail: { msg: "email inválido." } }
+                unique: {msg: "email já existe."},
+                validate: {isEmail: {msg: "email inválido."}}
             },
             password_hash: {
                 type: DataTypes.STRING,
@@ -53,22 +53,22 @@ export default class User extends Model{
             user_type: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: { isInt: { msg: "user_type inválido." } }
+                validate: {isInt: {msg: "user_type inválido."}}
             },
             active: {
                 type: DataTypes.TINYINT,
                 defaultValue: 1,
-                validate: { isInt: { msg: "active inválido." } }
+                validate: {isInt: {msg: "active inválido."}}
             },
             created_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: { isInt: { msg: "created_by inválido." } }
+                validate: {isInt: {msg: "created_by inválido."}}
             },
             updated_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: { isInt: { msg: "updated_by inválido." } }
+                validate: {isInt: {msg: "updated_by inválido."}}
             },
         }, {
             sequelize,
