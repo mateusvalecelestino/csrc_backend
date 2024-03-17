@@ -23,6 +23,7 @@ class Users {
     }
 
     async show(req, res){
+        // Melhorar o response disso
         try {
             const {id} = req.params;
             const user = await User.findByPk(id,{
@@ -59,6 +60,27 @@ class Users {
             // Trabalhar a messages de erro
             return res.status(httpStatusCode.BAD_REQUEST).json({
                errors: e.errors.map(err => err.message)
+            });
+        }
+    }
+
+    async put(req, res){
+        try {
+
+            if(!req.params.id || !/^\d+$/.test(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({
+                success: false, message: "id inválido!"
+            });
+            const user = await User.findByPk(req.params.id);
+            if(!user) return res.status(httpStatusCode.BAD_REQUEST).json({
+                success: false, message: "utilizador não existe!"
+            })
+            await user.update(req.body);
+            return res.status(httpStatusCode.CREATED).json({ success: true, message: "utilizador registado com sucesso!" });
+        }catch (e) {
+            // Trabalhar a messages de erro
+            console.log(e);
+            return res.status(httpStatusCode.BAD_REQUEST).json({
+                errors: e.errors.map(err => err.message)
             });
         }
     }

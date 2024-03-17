@@ -1,11 +1,10 @@
 import {Router} from "express";
 import userController from '../controllers/Users'; // Importa o objecto controller de User
-const router = new Router; // Cria o router
+const router = new Router;
 
-// Rotas
-// UserTypes
-router.get('/', userController.index); // getAll
-router.get('/:id', userController.show) // getUser
-router.post('/create', userController.create); // create
+router.get('/', userController.index);
+router.get('/:id', userController.show);
+router.post('/create', userController.create);
+router.put('/:id', userController.put);
 
 export default router; // Exporta o router
