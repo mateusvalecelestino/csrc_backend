@@ -32,6 +32,7 @@ export default class User extends Model{
             email: {
                 type: DataTypes.STRING,
                 defaultValue: "",
+                unique: { msg: "email já existe." },
                 validate: {
                     len: {
                         args: [3, 255],
