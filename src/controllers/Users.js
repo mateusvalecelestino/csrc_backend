@@ -51,7 +51,7 @@ class Users {
                 ],
             });
 
-            if(!user) return res.status(httpStatusCode.NO_CONTENT).json({});
+            if(!user) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "utilizador não existe." });
             return res.json(user);
         } catch (e) {
             return res.status(httpStatusCode.SERVER_ERROR).json({ message: e.message })
