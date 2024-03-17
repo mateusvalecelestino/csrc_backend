@@ -83,6 +83,13 @@ export default class User extends Model{
         }, {
             sequelize,
         });
+
+        // Cria o hash da senha antes de salvar no banco
+        this.addHook('beforeSave', async user => {
+            // noinspection JSUnresolvedReference
+            user.password_hash = await bcrypt.hash(user.password, 8);
+        })
+
         return this;
     }
 }
