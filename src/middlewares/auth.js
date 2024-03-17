@@ -7,9 +7,7 @@ export default (req, res, next) => {
     const {authorization} = req.headers; // Guarda o token de headers
 
     // Verifica se foi mandado um token
-    if (!authorization) return res.status(httpStatusCode.UNAUTHORIZED).json({
-        success: false, message: "autenticação necessária!"
-    })
+    if (!authorization) return res.status(httpStatusCode.UNAUTHORIZED).json({ message: "autenticação necessária!" });
 
     const token = authorization.split(' ')[1]; // Separa o token da palavra Bearer
     try {
@@ -20,8 +18,6 @@ export default (req, res, next) => {
         req.userType = user_type;
         return next();
     } catch (e) {
-        return res.status(httpStatusCode.BAD_REQUEST).json({
-            success: false, message: "token expirado ou inválido."
-        })
+        return res.status(httpStatusCode.BAD_REQUEST).json({ message: "token expirado ou inválido." });
     }
 }

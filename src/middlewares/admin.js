@@ -1,10 +1,7 @@
 import httpStatusCode from "../utils/HttpStatusCode";
+import UserTypes from "../utils/UserTypes";
 // Middleware para verificar se o user é admin
 export default (req, res, next) => {
-    const ADMIN_USER_TYPE = 1;
-    if (req.userId !== 1) return res.status(httpStatusCode.UNAUTHORIZED).json({
-        success: false,
-        message: "Acesso negado!"
-    });
+    if (req.userId !== UserTypes.ADMIN) return res.status(httpStatusCode.UNAUTHORIZED).json({ message: "Acesso não autorizado!" });
     return next();
 }
