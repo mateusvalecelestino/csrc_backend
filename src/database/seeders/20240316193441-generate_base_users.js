@@ -7,7 +7,7 @@ module.exports = {
             {
                 name: 'Admin',
                 email: 'admin@admin.com',
-                password_hash: 'hashed_password_1',
+                password_hash: '$2a$08$CTr1hm80.Dn9a9tAjWFrtOZZmbYa/uSQE01IY.9nLuYWyShgFyzYi', // Csrc-1234
                 user_type: 1,
                 created_by: 1,
                 updated_by: 1,
@@ -17,7 +17,7 @@ module.exports = {
             {
                 name: 'Medico',
                 email: 'medico@medico.com',
-                password_hash: 'hashed_password_2',
+                password_hash: '$2a$08$CTr1hm80.Dn9a9tAjWFrtOZZmbYa/uSQE01IY.9nLuYWyShgFyzYi', // Csrc-1234
                 user_type: 2,
                 created_by: 1,
                 updated_by: 1,
@@ -27,8 +27,28 @@ module.exports = {
             {
                 name: 'Anal. Lab',
                 email: 'anal@anal.com',
-                password_hash: 'hashed_password_3',
+                password_hash: '$2a$08$CTr1hm80.Dn9a9tAjWFrtOZZmbYa/uSQE01IY.9nLuYWyShgFyzYi', // Csrc-1234
                 user_type: 3,
+                created_by: 1,
+                updated_by: 1,
+                created_at: new Date(),
+                updated_at: new Date()
+            },
+            {
+                name: 'Triagista',
+                email: 'triagista@triagista.com',
+                password_hash: '$2a$08$CTr1hm80.Dn9a9tAjWFrtOZZmbYa/uSQE01IY.9nLuYWyShgFyzYi', // Csrc-1234
+                user_type: 4,
+                created_by: 1,
+                updated_by: 1,
+                created_at: new Date(),
+                updated_at: new Date()
+            },
+            {
+                name: 'Recepcionista',
+                email: 'recepcionista@recepcionista.com',
+                password_hash: '$2a$08$CTr1hm80.Dn9a9tAjWFrtOZZmbYa/uSQE01IY.9nLuYWyShgFyzYi', // Csrc-1234
+                user_type: 5,
                 created_by: 1,
                 updated_by: 1,
                 created_at: new Date(),
