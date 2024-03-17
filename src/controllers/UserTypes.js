@@ -5,13 +5,11 @@ class UserTypes {
     async index(req, res) {
         try {
             // Carrega todos os tipos de usuários, apenas os campos passados como attributes
-            const userTypes = await UserType.findAll({attributes: ['user_types_id', 'name', 'desc']});
-            res.json(userTypes);
+            const userTypes = await UserType.findAll({attributes: ['id', 'name', 'desc']});
+            if(!userTypes) return res.status(httpStatusCode.NO_CONTENT).json({});
+            return res.json(userTypes);
         } catch (e) {
-            res.status(httpStatusCode.SERVER_ERROR).json({
-                success: false,
-                message: "Erro ao carregar tipos de usuários. Tente mais tarde!"
-            })
+            return res.status(httpStatusCode.SERVER_ERROR).json({ message: "Erro ao carregar tipos de usuários. Tente mais tarde!" });
         }
     }
 }

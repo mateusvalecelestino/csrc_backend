@@ -1,6 +1,7 @@
 import httpStatusCode from "../utils/HttpStatusCode";
 import User from "../models/User";
 import UserType from "../models/UserType";
+import isInt from "validator/lib/isInt";
 
 class Users {
     async index(req, res) {
@@ -17,16 +18,18 @@ class Users {
                     }
                 ],
             });
-            res.json(users);
+            if(!users) return res.status(httpStatusCode.NO_CONTENT).json({});
+            return res.json(users);
         } catch (e) {
-            res.status(httpStatusCode.SERVER_ERROR).json({success: false, message: e.message})
+            return res.status(httpStatusCode.SERVER_ERROR).json({ message: e.message})
         }
     }
 
     async show(req, res) {
-        // Melhorar o response disso
         try {
             const {id} = req.params;
+            if(!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id inválido." });
+
             const user = await User.findByPk(id, {
                 attributes: ['id', 'name', 'email', 'created_at', 'updated_at'],
                 include: [
@@ -47,16 +50,18 @@ class Users {
                     }
                 ],
             });
-            res.json(user);
+
+            if(!user) return res.status(httpStatusCode.NO_CONTENT).json({});
+            return res.json(user);
         } catch (e) {
-            res.status(httpStatusCode.SERVER_ERROR).json({success: false, message: e.message})
+            return res.status(httpStatusCode.SERVER_ERROR).json({ message: e.message })
         }
     }
 
     async create(req, res) {
         try {
-            const newUser = await User.create(req.body);
-            return res.status(httpStatusCode.CREATED).json({success: true, user: newUser});
+            const user = await User.create(req.body);
+            return res.status(httpStatusCode.CREATED).json({ user });
         } catch (e) {
             // Trabalhar a messages de erro
             return res.status(httpStatusCode.BAD_REQUEST).json({
@@ -67,19 +72,11 @@ class Users {
 
     async put(req, res) {
         try {
-
-            if (!req.params.id || !/^\d+$/.test(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({
-                success: false, message: "id inválido!"
-            });
+            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id inválido." });
             const user = await User.findByPk(req.params.id);
-            if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({
-                success: false, message: "utilizador não existe!"
-            })
+            if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "utilizador não existe." });
             await user.update(req.body);
-            return res.status(httpStatusCode.CREATED).json({
-                success: true,
-                message: "utilizador registado com sucesso!"
-            });
+            return res.json({ user });
         } catch (e) {
             // Trabalhar a messages de erro
             console.log(e);
@@ -91,19 +88,11 @@ class Users {
 
     async delete(req, res) {
         try {
-
-            if (!req.params.id || !/^\d+$/.test(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({
-                success: false, message: "id inválido!"
-            });
+            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id inválido." });
             const user = await User.findByPk(req.params.id);
-            if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({
-                success: false, message: "utilizador não existe!"
-            })
+            if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "utilizador não existe." });
             await user.destroy();
-            return res.status(httpStatusCode.CREATED).json({
-                success: true,
-                message: "utilizador excluido com sucesso!"
-            });
+            return res.status(httpStatusCode.NO_CONTENT).json({});
         } catch (e) {
             // Trabalhar a messages de erro
             console.log(e);

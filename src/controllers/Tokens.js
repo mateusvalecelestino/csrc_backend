@@ -27,9 +27,9 @@ class Tokens {
 
             // Cria o token
             const token = jwt.sign({id, name, user_type}, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRATION });
-            res.json({ token });
+            return res.json({ token });
         } catch (e) {
-            res.status(httpStatusCode.SERVER_ERROR).json({ message: "Erro ao logar usuário. Tente mais tarde!" });
+            return res.status(httpStatusCode.SERVER_ERROR).json({ message: "Erro ao logar usuário. Tente mais tarde!" });
         }
     }
 }
