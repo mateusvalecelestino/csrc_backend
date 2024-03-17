@@ -3,7 +3,7 @@ class HttpStatusCodes {
     constructor() {
         this.OK = 200;
         this.CREATED = 201;
-        this.NO_CONTENT = 201;
+        this.NO_CONTENT = 204;
         this.BAD_REQUEST = 400;
         this.UNAUTHORIZED = 401;
         this.NOT_FOUND = 404;
