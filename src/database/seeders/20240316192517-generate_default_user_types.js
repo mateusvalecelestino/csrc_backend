@@ -6,28 +6,23 @@ module.exports = {
         await queryInterface.bulkInsert('user_types', [
             {
                 name: 'Admin',
-                desc: "Acesso total ao sistema.",
-                home: "/dash/admin/home"
+                desc: "Acesso total ao sistema."
             },
             {
                 name: 'Médico',
-                desc: "Acesso a funcionalidades médicas e de paciente.",
-                home: "/dash/medico/home"
+                desc: "Acesso a funcionalidades médicas e de paciente."
             },
             {
                 name: 'Analista de Laboratório',
-                desc: "Acesso a ferramentas e dados laboratoriais.",
-                home: "/dash/analista/home"
+                desc: "Acesso a ferramentas e dados laboratoriais."
             },
             {
                 name: 'Triagista',
-                desc: "Acesso a ferramentas de triagem e informações iniciais do paciente.",
-                home: "/dash/triagista/home"
+                desc: "Acesso a ferramentas de triagem e informações iniciais do paciente."
             },
             {
                 name: 'Recepcionista',
-                desc: "Acesso a ferramentas de agendamento e gestão de pacientes.",
-                home: "/dash/recepcionista/home"
+                desc: "Acesso a ferramentas de agendamento e gestão de pacientes."
             }
         ], {});
     },
