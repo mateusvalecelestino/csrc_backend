@@ -12,7 +12,7 @@ class UserTypes {
             if(!userTypes) return res.status(httpStatusCode.NO_CONTENT).json({});
             return res.json(userTypes);
         } catch (e) {
-            return res.status(httpStatusCode.SERVER_ERROR).json({ message: "Erro ao carregar tipos de usuários. Tente mais tarde!" });
+            return res.status(httpStatusCode.SERVER_ERROR).json({ message: e });
         }
     }
 }

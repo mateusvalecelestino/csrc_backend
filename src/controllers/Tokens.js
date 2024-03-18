@@ -2,7 +2,7 @@ import httpStatusCode from "../utils/HttpStatusCode";
 import User from "../models/User";
 import isEmail from 'validator/lib/isEmail';
 import jwt from 'jsonwebtoken';
-import 'dotenv/config' // Importa o dotenv
+import 'dotenv/config';
 class Tokens {
     async create(req, res) {
         try {
@@ -29,7 +29,8 @@ class Tokens {
             const token = jwt.sign({id, name, user_type}, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRATION });
             return res.json({ token });
         } catch (e) {
-            return res.status(httpStatusCode.SERVER_ERROR).json({ message: "Erro ao logar usuário. Tente mais tarde!" });
+            console.log(e);
+            return res.status(httpStatusCode.SERVER_ERROR).json({ message: e });
         }
     }
 }

@@ -9,5 +9,7 @@ const connection = new Sequelize(dbConfig); // Instância a conn. com a db
 
 // Guarda todos os models da bd
 const models = [UserType, User];
-models.forEach(model => model.init(connection)); // Inicia os models com a conexão com o banco
-models.forEach(model => model.associate && model.associate(connection.models)) // Verifica os models que possuem o método associate e executa passando o array de models
+// Inicia os models com a conexão com o banco
+models.forEach(model => model.init(connection));
+// Verifica os models que possuem o método associate e executa passando o array de models
+models.forEach(model => model.associate && model.associate(connection.models))
