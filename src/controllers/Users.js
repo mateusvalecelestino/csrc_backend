@@ -2,6 +2,7 @@ import httpStatusCode from "../utils/HttpStatusCode";
 import User from "../models/User";
 import UserType from "../models/UserType";
 import isInt from "validator/lib/isInt";
+import {Op} from "sequelize";
 
 class Users {
     async index(req, res) {
@@ -15,7 +16,14 @@ class Users {
                 return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Parâmetros de carregamento inválidos." });
             }
 
-            const offset = (page - 1) * size; // Calculo do offset
+            const offset = (page - 1) * size; // Cálculo do offset
+            const whereClause = {}; // Definição da claúsula where
+
+            // Verificação se existe termo de busca e se é um nome
+            if(search) {
+                if(!/^[A-Za-zÀ-ú\s]+$/.test(search)) return res.status(httpStatusCode.NO_CONTENT).json({});
+                whereClause.name = { [Op.like]: `${search}%` };
+            }
 
             // # → Consulta ao banco de dados
             const { count: totalUsers, rows: data } = await User.findAndCountAll({
@@ -27,6 +35,7 @@ class Users {
                         attributes: ['id', 'name']
                     }
                 ],
+                where: whereClause,
                 order: [['id', 'DESC']],
                 limit: size,
                 offset: offset
