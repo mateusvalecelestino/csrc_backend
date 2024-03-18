@@ -1,5 +1,6 @@
 import httpStatusCode from "../utils/HttpStatusCode";
 import UserType from "../models/UserType";
+import errorHandler from "../middlewares/errorHandler";
 
 class UserTypes {
     async index(req, res) {
@@ -11,8 +12,8 @@ class UserTypes {
             });
             if(!userTypes) return res.status(httpStatusCode.NO_CONTENT).json({});
             return res.json(userTypes);
-        } catch (e) {
-            return res.status(httpStatusCode.SERVER_ERROR).json({ message: e });
+        } catch (error) {
+            errorHandler(error, req, res);
         }
     }
 }

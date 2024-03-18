@@ -3,6 +3,7 @@ import User from "../models/User";
 import isEmail from 'validator/lib/isEmail';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
+import errorHandler from "../middlewares/errorHandler";
 class Tokens {
     async create(req, res) {
         try {
@@ -28,9 +29,8 @@ class Tokens {
             // Cria o token
             const token = jwt.sign({id, name, user_type}, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_EXPIRATION });
             return res.json({ token });
-        } catch (e) {
-            console.log(e);
-            return res.status(httpStatusCode.SERVER_ERROR).json({ message: e });
+        } catch (error) {
+            errorHandler(error, req, res);
         }
     }
 }
