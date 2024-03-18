@@ -4,6 +4,7 @@ import UserType from "../models/UserType";
 import isInt from "validator/lib/isInt";
 import {Op} from "sequelize";
 import errorHandler from "../middlewares/errorHandler";
+import userTypes from "../utils/UserTypes";
 
 class Users {
     async index(req, res) {
@@ -85,6 +86,17 @@ class Users {
 
     async create(req, res) {
         try {
+
+            // Remoção dos campos não criáveis
+            delete req.body.id;
+            delete req.body.active;
+            delete req.body.created_at;
+            delete req.body.updated_at;
+
+            // Adiciona o usuário que fez a request como criador e actualizador
+            req.body.created_by = req.userId;
+            req.body.updated_by = req.userId;
+
             const user = await User.create(req.body);
             const {id, name, email, user_type, created_by} = user;
             return res.status(httpStatusCode.CREATED).json({ user: {id, name, email, user_type, created_by} });
@@ -98,6 +110,20 @@ class Users {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id inválido." });
             const user = await User.findByPk(req.params.id);
             if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "utilizador não existe." });
+
+            // Remoção dos campos não editáveis
+            delete req.body.id;
+            delete req.body.active; // Será editado noutra rota
+            delete req.body.created_by;
+            delete req.body.created_at;
+            delete req.body.updated_at;
+
+            // Se o usuário não for admin não poderá editar o seu tipo
+            if(req.userType !== userTypes.ADMIN) delete req.body.user_type;
+
+            // Adiciona o usuário que fez a request como actualizador
+            req.body.updated_by = req.userId;
+
             await user.update(req.body);
             const {id, name, email, user_type, updated_by} = user;
             return res.json({ user: {id, name, email, user_type, updated_by} });
