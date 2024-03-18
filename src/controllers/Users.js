@@ -131,6 +131,22 @@ class Users {
             errorHandler(error, req, res);
         }
     }
+
+    async patch(req, res) {
+        try {
+            if (!isInt(req.params.id) || !isInt(req.body.active)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id inválido." });
+            const user = await User.findByPk(req.params.id); // Busca o usuário no banco de dados
+
+            if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "utilizador não existe." });
+            await user.update({ active: req.body.active, updated_by: req.userId });
+
+            const {id, name, email, user_type, updated_by} = user;
+            return res.json({ user: {id, name, email, user_type, updated_by} });
+        } catch (error) {
+            errorHandler(error, req, res);
+        }
+    }
+
 }
 
 export default new Users; // exporta o objecto da classe
