@@ -6,23 +6,37 @@ import isInt from "validator/lib/isInt";
 class Users {
     async index(req, res) {
         try {
-            const users = await User.findAll({
-                attributes: ['id', 'name', 'email'], // Define os campos da tabela da table main
-                order: [['id', 'DESC']],
-                // Define as associações (joins)
+            let { size = '10', page = '1', search = '' } = req.query;
+
+            // # → Validação dos parâmetros de carregamento
+            size = parseInt(size);
+            page = parseInt(page);
+            if (isNaN(size) || isNaN(page) || size < 1 || page < 1) {
+                return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Parâmetros de carregamento inválidos." });
+            }
+
+            const offset = (page - 1) * size; // Calculo do offset
+
+            // # → Consulta ao banco de dados
+            const { count: totalUsers, rows: data } = await User.findAndCountAll({
+                attributes: ['id', 'name', 'email'],
                 include: [
-                    // Associação com model user_types
                     {
                         model: UserType,
-                        as: "type", // Referência o alias definido na assoc.
-                        attributes: ['id', 'name'] // Define os campos a serem recuperados de user_types
+                        as: "type",
+                        attributes: ['id', 'name']
                     }
                 ],
+                order: [['id', 'DESC']],
+                limit: size,
+                offset: offset
             });
-            if(!users) return res.status(httpStatusCode.NO_CONTENT).json({});
-            return res.json(users);
+
+            const last_page = Math.ceil(totalUsers / size); // Calc. do total de páginas
+            if(!data) return res.status(httpStatusCode.NO_CONTENT).json({}); // Verificação se há dados
+            return res.json({ last_page, data });
         } catch (e) {
-            return res.status(httpStatusCode.SERVER_ERROR).json({ message: e })
+            return res.status(httpStatusCode.SERVER_ERROR).json({ message: e.message })
         }
     }
 
