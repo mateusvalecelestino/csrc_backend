@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from "express";
 import './src/database/connection'; // Importa a conexão com|para os models
 import userTypes from "./src/routes/userTypes";
 import users from "./src/routes/users";
@@ -12,6 +13,7 @@ class App {
     }
 
     middlewares() {
+        this.app.use(bodyParser.json()); // Middleware para fazer converter o corpo da solicitação como JSON
         // noinspection JSCheckFunctionSignatures
         this.app.use(express.urlencoded({extended: true})); // Habilita a recepção de params na url
         // noinspection JSCheckFunctionSignatures
