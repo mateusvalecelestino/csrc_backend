@@ -17,16 +17,16 @@ export default class User extends Model {
             // Definição dos campos do model
             name: {
                 type: DataTypes.STRING(30),
-                defaultValue: "", // Valor default caso nada for enviado
-                // Validações dos dados (tudo que é validate)
+                defaultValue: "",
+                unique: { msg: "nome já existe." },
                 validate: {
                     len: {
                         args: [3, 30],
-                        msg: "name de utilizador deve ter entre 3 e 30 caracteres."
+                        msg: "nome de utilizador deve ter entre 3 e 30 caracteres."
                     },
                     is: {
                         args: /^[A-Za-zÀ-ú\s]+$/,
-                        msg: "name deve possuir apenas caracteres alfabéticos."
+                        msg: "nome deve possuir apenas caracteres alfabéticos."
                     },
                 }
             },
@@ -46,7 +46,7 @@ export default class User extends Model {
                 validate: {
                     is: {
                         args: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,255})/g,
-                        msg: "password deve ter no mínimo 8 caracteres, incluindo pelo menos uma letra minúscula, uma letra maiúscula, um número, um caractere especial e deve ter no máximo 255 caracteres."
+                        msg: "senha deve ter no mínimo 8 caracteres, incluindo pelo menos uma letra minúscula, uma letra maiúscula, um número, um caractere especial e deve ter no máximo 255 caracteres."
                     },
                 }
             },
@@ -58,17 +58,17 @@ export default class User extends Model {
             active: {
                 type: DataTypes.TINYINT,
                 defaultValue: 1,
-                validate: {isInt: {msg: "active inválido."}}
+                validate: {isInt: {msg: "estado inválido."}}
             },
             created_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: {isInt: {msg: "created_by inválido."}}
+                validate: {isInt: {msg: "criador inválido."}}
             },
             updated_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: {isInt: {msg: "updated_by inválido."}}
+                validate: {isInt: {msg: "actualizador inválido."}}
             },
         }, {
             sequelize,
