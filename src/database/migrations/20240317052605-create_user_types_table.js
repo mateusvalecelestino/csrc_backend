@@ -10,9 +10,16 @@ module.exports = {
                 autoIncrement: true,
                 primaryKey: true
             },
-            name: {type: Sequelize.STRING(30), allowNull: false},
-            desc: {type: Sequelize.STRING(70), allowNull: false},
-            home: {type: Sequelize.STRING, allowNull: false}
+            name: {
+                type: Sequelize.STRING(30),
+                allowNull: false,
+                unique: true
+            },
+            desc: {
+                type: Sequelize.STRING(70),
+                allowNull: false,
+                unique: true
+            }
         });
     },
 

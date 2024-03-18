@@ -13,7 +13,8 @@ module.exports = {
             },
             name: {
                 type: Sequelize.STRING(30),
-                allowNull: false
+                allowNull: false,
+                unique: true
             },
             email: {
                 type: Sequelize.STRING,
@@ -31,7 +32,8 @@ module.exports = {
                     model: 'user_types',
                     key: 'id'
                 },
-                onDelete: 'RESTRICT'
+                onDelete: 'RESTRICT',
+                onUpdate: 'CASCADE'
             },
             active: {
                 type: Sequelize.TINYINT,
@@ -44,7 +46,8 @@ module.exports = {
                 references: {
                     model: 'users',
                     key: 'id',
-                    onDelete: 'RESTRICT'
+                    onDelete: 'RESTRICT',
+                    onUpdate: 'CASCADE'
                 }
             },
             updated_by: {
@@ -53,7 +56,8 @@ module.exports = {
                 references: {
                     model: 'users',
                     key: 'id',
-                    onDelete: 'RESTRICT'
+                    onDelete: 'RESTRICT',
+                    onUpdate: 'CASCADE'
                 }
             },
             created_at: {
