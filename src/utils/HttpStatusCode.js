@@ -6,6 +6,7 @@ class HttpStatusCodes {
         this.NO_CONTENT = 204;
         this.BAD_REQUEST = 400;
         this.UNAUTHORIZED = 401;
+        this.FORBIDDEN = 403;
         this.NOT_FOUND = 404;
         this.SERVER_ERROR = 500;
     }
