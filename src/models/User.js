@@ -53,12 +53,24 @@ export default class User extends Model {
             user_type: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: {isInt: {msg: "user_type inválido."}}
+                validate: {
+                    isInt: {msg: "user_type inválido."},
+                    isIn: {
+                        args: [[1, 2, 3, 4, 5]],
+                        msg: "user_type inválido."
+                    }
+                }
             },
             active: {
                 type: DataTypes.TINYINT,
                 defaultValue: 1,
-                validate: {isInt: {msg: "estado inválido."}}
+                validate: {
+                    isInt: {msg: "estado inválido."},
+                    isIn: {
+                        args: [[0, 1]],
+                        msg: "active inválido."
+                    }
+                }
             },
             created_by: {
                 type: DataTypes.INTEGER,
