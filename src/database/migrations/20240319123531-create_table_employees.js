@@ -28,7 +28,7 @@ module.exports = {
         allowNull: false,
         unique: true
       },
-      role: {
+      role_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -38,7 +38,7 @@ module.exports = {
           onUpdate: 'CASCADE'
         }
       },
-      specialty: {
+      specialty_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -48,7 +48,7 @@ module.exports = {
           onUpdate: 'CASCADE'
         }
       },
-      user: {
+      user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -95,7 +95,7 @@ module.exports = {
     });
 
     // Adiciona os índices
-    await queryInterface.addIndex('employees', ['user']);
+    await queryInterface.addIndex('employees', ['user_id']);
     await queryInterface.addIndex('employees', ['created_by']);
     await queryInterface.addIndex('employees', ['updated_by']);
   },
