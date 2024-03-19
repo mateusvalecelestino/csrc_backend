@@ -16,7 +16,51 @@ export default class Employee extends Model {
         // Chama o método init da classe pai para definir os campos do modelo
         // noinspection SpellCheckingInspection
         super.init({
-            // Definição dos campos do model
+            // Campos para criação de users
+            username: {
+                type: DataTypes.VIRTUAL,
+                defaultValue: "",
+                unique: {msg: "Nome de utilizador já existe."},
+                validate: {
+                    notEmpty: {msg: "Nome de utilizador não deve estar vazio."},
+                    len: {
+                        args: [3, 30],
+                        msg: "Nome de utilizador deve ter entre 3 e 30 caracteres."
+                    },
+                    is: {
+                        args: /^[A-Za-zÀ-ú\s]+$/,
+                        msg: "Nome de utilizador deve possuir apenas caracteres alfabéticos."
+                    },
+                }
+            },
+            user_email: {
+                type: DataTypes.VIRTUAL,
+                defaultValue: "",
+                unique: {msg: "Email de utilizador já existe."},
+                validate: {isEmail: {msg: "Email de utilizador inválido."}}
+            },
+            password: {
+                type: DataTypes.VIRTUAL, // Não existe no banco
+                defaultValue: "",
+                validate: {
+                    is: {
+                        args: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,255})/g,
+                        msg: "Senha de utilizador deve ter no mínimo 8 caracteres, incluindo pelo menos uma letra minúscula, uma letra maiúscula, um número, um caractere especial e deve ter no máximo 255 caracteres."
+                    },
+                }
+            },
+            user_type: {
+                type: DataTypes.VIRTUAL,
+                defaultValue: "",
+                validate: {
+                    isInt: {msg: "Tipo de utilizador inválido."},
+                    isIn: {
+                        args: [[1, 2, 3, 4, 5]],
+                        msg: "Tipo de utilizador inválido."
+                    }
+                }
+            },
+            // Campos para a criação de employee
             full_name: {
                 type: DataTypes.STRING(100),
                 defaultValue: "",
@@ -71,8 +115,7 @@ export default class Employee extends Model {
             },
             user_id: {
                 type: DataTypes.INTEGER,
-                defaultValue: "",
-                validate: { isInt: { msg: "Usuário de funcionário inválido."} }
+                defaultValue: ""
             },
             active: {
                 type: DataTypes.TINYINT,
