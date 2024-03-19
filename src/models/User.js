@@ -1,5 +1,6 @@
 import {DataTypes, Model} from "sequelize";
 import bcrypt from 'bcryptjs';
+import Employee from "./Employee";
 
 export default class User extends Model {
     // Definição as associações (joins)
@@ -11,6 +12,9 @@ export default class User extends Model {
         this.belongsTo(models.Role, {as: "role_updater", foreignKey: 'updated_by'}); // Assoc. com a table roles
         this.belongsTo(models.Role, {as: "speciality_creator", foreignKey: 'created_by'}); // Assoc. com a table speciality
         this.belongsTo(models.Role, {as: "speciality_updater", foreignKey: 'updated_by'}); // Assoc. com a table speciality
+        this.belongsTo(models.Employee, {as: "employees_creator", foreignKey: 'created_by'}); // Assoc. com a table employees
+        this.belongsTo(models.Employee, {as: "employees_updater", foreignKey: 'updated_by'}); // Assoc. com a table employees
+        this.belongsTo(models.Employee, { as: "employee", foreignKey: 'user_id'} ); // Assoc. com a table employee
     }
 
     static init(sequelize) {

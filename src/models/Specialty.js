@@ -5,6 +5,7 @@ export default class Specialty extends Model {
     static associate(models) {
         this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'}); // Assoc. com a table users
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'}); // Assoc. com a table users
+        this.hasMany(models.Employee, {as: "employees", foreignKey: "specialty_id"}); // Assoc. com a table employees
     }
 
     static init(sequelize) {

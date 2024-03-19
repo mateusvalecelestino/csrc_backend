@@ -5,6 +5,7 @@ export default class Role extends Model {
     static associate(models) {
         this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'}); // Assoc. com a table users
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'}); // Assoc. com a table users
+        this.hasMany(models.Employee, {as: "employees", foreignKey: "role_id"}); // Assoc. com a table employees
     }
 
     static init(sequelize) {
