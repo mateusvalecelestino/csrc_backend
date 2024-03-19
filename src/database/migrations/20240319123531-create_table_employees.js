@@ -38,7 +38,7 @@ module.exports = {
           onUpdate: 'CASCADE'
         }
       },
-      speciality: {
+      specialty: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
