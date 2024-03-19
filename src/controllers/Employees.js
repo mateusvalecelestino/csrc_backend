@@ -3,7 +3,6 @@ import Employee from "../models/Employee";
 import Role from "../models/Role";
 import isInt from "validator/lib/isInt";
 import errorHandler from "../middlewares/errorHandler";
-import userTypes from "../utils/UserTypes";
 import Specialty from "../models/Specialty";
 import User from "../models/User";
 
@@ -90,34 +89,32 @@ class Users {
     //         errorHandler(error, req, res);
     //     }
     // }
-    //
-    // async put(req, res) {
-    //     try {
-    //         if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "id inválido."});
-    //         const user = await Employee.findByPk(req.params.id);
-    //         if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({message: "utilizador não existe."});
-    //
-    //         // Remoção dos campos não editáveis
-    //         delete req.body.id;
-    //         delete req.body.active; // Será editado noutra rota
-    //         delete req.body.created_by;
-    //         delete req.body.created_at;
-    //         delete req.body.updated_at;
-    //
-    //         // Se o usuário não for admin não poderá editar o seu tipo
-    //         if (req.userType !== userTypes.ADMIN) delete req.body.user_type;
-    //
-    //         // Adiciona o usuário que fez a request como actualizador
-    //         req.body.updated_by = req.userId;
-    //
-    //         await user.update(req.body);
-    //         const {id, name, email, user_type, updated_by} = user;
-    //         return res.json({user: {id, name, email, user_type, updated_by}});
-    //     } catch (error) {
-    //         errorHandler(error, req, res);
-    //     }
-    // }
-    //
+
+    async put(req, res) {
+        try {
+            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de funcionário inválido."});
+            const employee = await Employee.findByPk(req.params.id);
+
+            // Remoção dos campos não editáveis
+            delete req.body.id;
+            delete req.body.user_id;
+            delete req.body.active;
+            delete req.body.created_by;
+            delete req.body.created_at;
+            delete req.body.updated_at;
+
+            // Adiciona o usuário que fez a request como actualizador
+            req.body.updated_by = req.userId;
+
+            await employee.update(req.body);
+            const {id, full_name, birth_date, gender, order_number, updated_by} = employee;
+            return res.json({employee: {id, full_name, birth_date, gender, order_number, updated_by} });
+        } catch (error) {
+            console.log(error);
+            errorHandler(error, req, res);
+        }
+    }
+
     // async patch(req, res) {
     //     try {
     //         if (!isInt(req.params.id) || !isInt(req.body.active)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "id inválido."});
