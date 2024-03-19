@@ -15,7 +15,7 @@ models.forEach(model => {
     model.init(connection);
 
     // Adicione um hook global 'beforeSave' para todos os modelos
-    connection.addHook('beforeSave', "trimAllValues" , (instance) => {
+    connection.addHook('beforeSave', "trimAllValues", (instance) => {
         // Verifica se a instância é do model actual
         if (instance instanceof model) {
             // Realiza o trim dos dados de string antes de salvar

@@ -3,6 +3,7 @@ import roleController from '../controllers/Roles';
 import auth from "../middlewares/auth";
 import admin from "../middlewares/admin";
 import getHandler from "../middlewares/getHandler";
+
 const router = new Router;
 
 router.get('/', auth, admin, getHandler, roleController.index);

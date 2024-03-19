@@ -10,7 +10,7 @@ class UserTypes {
                 attributes: ['id', 'name', 'desc'],
                 order: [['id', 'DESC']]
             });
-            if(!userTypes) return res.status(httpStatusCode.NO_CONTENT).json({});
+            if (!userTypes) return res.status(httpStatusCode.NO_CONTENT).json({});
             return res.json(userTypes);
         } catch (error) {
             errorHandler(error, req, res);

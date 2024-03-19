@@ -10,7 +10,7 @@ export default (error, req, res) => {
         }));
 
         // Retorna os erros de validação em uma resposta JSON
-        return res.status(httpStatusCode.BAD_REQUEST).json({ errors: validationErrors });
+        return res.status(httpStatusCode.BAD_REQUEST).json({errors: validationErrors});
     }
 
     // Verifica se o erro é uma violação de restrição única do Sequelize
@@ -18,7 +18,7 @@ export default (error, req, res) => {
     if (error.name === 'SequelizeUniqueConstraintError') {
         // Extrai a mensagem de erro
         const message = error.errors[0].message;
-        return res.status(httpStatusCode.BAD_REQUEST).json({ message });
+        return res.status(httpStatusCode.BAD_REQUEST).json({message});
     }
     return res.status(httpStatusCode.SERVER_ERROR).json({message: "Erro interno do servidor. Tente mais tarde."})
 }

@@ -8,7 +8,7 @@ export default async (req, res, next) => {
     const {authorization} = req.headers; // Guarda o token de headers
 
     // Verifica se foi mandado um token
-    if (!authorization) return res.status(httpStatusCode.UNAUTHORIZED).json({ message: "autenticação necessária!" });
+    if (!authorization) return res.status(httpStatusCode.UNAUTHORIZED).json({message: "autenticação necessária!"});
 
     const token = authorization.split(' ')[1]; // Separa o token da palavra Bearer
     try {
@@ -18,13 +18,13 @@ export default async (req, res, next) => {
         const user = await User.findByPk(id); // Busca os dados do usuário no banco
 
         // Verifica se o usuário ainda é activo no banco
-        if(!user || !user.active) return res.status(httpStatusCode.UNAUTHORIZED).json({ message: "Acesso negado sua conta foi desactivada." })
+        if (!user || !user.active) return res.status(httpStatusCode.UNAUTHORIZED).json({message: "Acesso negado sua conta foi desactivada."})
 
         // Adiciona as info do usuário na requisição
         req.userId = id;
         req.userType = user_type;
         return next();
     } catch (e) {
-        return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Token expirado ou inválido." });
+        return res.status(httpStatusCode.BAD_REQUEST).json({message: "Token expirado ou inválido."});
     }
 }

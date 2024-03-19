@@ -19,9 +19,9 @@ export default class User extends Model {
             name: {
                 type: DataTypes.STRING(30),
                 defaultValue: "",
-                unique: { msg: "Nome de utilizador já existe." },
+                unique: {msg: "Nome de utilizador já existe."},
                 validate: {
-                    notEmpty: { msg: "Nome de utilizador não deve estar vazio." },
+                    notEmpty: {msg: "Nome de utilizador não deve estar vazio."},
                     len: {
                         args: [3, 30],
                         msg: "Nome de utilizador deve ter entre 3 e 30 caracteres."
@@ -67,7 +67,7 @@ export default class User extends Model {
                 type: DataTypes.TINYINT,
                 defaultValue: 1,
                 validate: {
-                    isInt: { msg: "Estado de utilizador inválido." },
+                    isInt: {msg: "Estado de utilizador inválido."},
                     isIn: {
                         args: [[0, 1]],
                         msg: "Estado de utilizador inválido."
@@ -91,7 +91,7 @@ export default class User extends Model {
         // Cria o hash da senha antes de salvar no banco
         this.addHook('beforeSave', async user => {
             // Verifica se foi mandada uma senha
-            if(user.password) user.password_hash = await bcrypt.hash(user.password, 8);
+            if (user.password) user.password_hash = await bcrypt.hash(user.password, 8);
         })
         return this;
     }

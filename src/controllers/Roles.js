@@ -8,7 +8,7 @@ class Roles {
     async index(req, res) {
         try {
             // # → Consulta ao banco de dados
-            const { count: totalRoles, rows: data } = await Role.findAndCountAll({
+            const {count: totalRoles, rows: data} = await Role.findAndCountAll({
                 attributes: ['id', 'name'],
                 where: req.whereClause,
                 order: [['id', 'DESC']],
@@ -17,17 +17,17 @@ class Roles {
             });
 
             const last_page = Math.ceil(totalRoles / req.size); // Calc. do total de páginas
-            if(!data) return res.status(httpStatusCode.NO_CONTENT).json({}); // Verificação se há dados
-            return res.json({ last_page, data });
+            if (!data) return res.status(httpStatusCode.NO_CONTENT).json({}); // Verificação se há dados
+            return res.json({last_page, data});
         } catch (error) {
             errorHandler(error, req, res);
         }
     }
-    //
+
     async show(req, res) {
         try {
             const {id} = req.params;
-            if(!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id de cargo inválido." });
+            if (!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "id de cargo inválido."});
 
             const role = await Role.findByPk(id, {
                 attributes: ['id', 'name', 'desc', 'created_at', 'updated_at'],
@@ -45,7 +45,7 @@ class Roles {
                 ],
             });
 
-            if(!role) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Cargo não existe." });
+            if (!role) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo não existe."});
             return res.json(role);
         } catch (error) {
             errorHandler(error, req, res);
@@ -66,7 +66,7 @@ class Roles {
 
             const role = await Role.create(req.body);
             const {id, name, desc, created_by} = role;
-            return res.status(httpStatusCode.CREATED).json({ role: {id, name, desc, created_by} });
+            return res.status(httpStatusCode.CREATED).json({role: {id, name, desc, created_by}});
         } catch (error) {
             errorHandler(error, req, res);
         }
@@ -74,9 +74,9 @@ class Roles {
 
     async put(req, res) {
         try {
-            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Id de cargo inválido." });
+            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de cargo inválido."});
             const role = await Role.findByPk(req.params.id);
-            if (!role) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Cargo não existe." });
+            if (!role) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo não existe."});
 
             // Remoção dos campos não editáveis
             delete req.body.id;
@@ -88,7 +88,7 @@ class Roles {
 
             await role.update(req.body);
             const {id, name, desc, updated_by} = role;
-            return res.json({ user: {id, name, desc, updated_by} });
+            return res.json({user: {id, name, desc, updated_by}});
         } catch (error) {
             errorHandler(error, req, res);
         }
@@ -96,4 +96,4 @@ class Roles {
 
 }
 
-export default new Roles; // exporta o objecto da classe
+export default new Roles;

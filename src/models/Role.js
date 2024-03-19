@@ -15,9 +15,9 @@ export default class Role extends Model {
             name: {
                 type: DataTypes.STRING(50),
                 defaultValue: "",
-                unique: { msg: "Nome de cargo já existe." },
+                unique: {msg: "Nome de cargo já existe."},
                 validate: {
-                    notEmpty: { msg: "Nome de cargo não deve estar vazio." },
+                    notEmpty: {msg: "Nome de cargo não deve estar vazio."},
                     len: {
                         args: [3, 50],
                         msg: "Nome de cargo deve ter entre 3 e 50 caracteres."
@@ -31,9 +31,9 @@ export default class Role extends Model {
             desc: {
                 type: DataTypes.STRING(500),
                 defaultValue: "",
-                unique: { msg: "Descrição de cargo já existe." },
+                unique: {msg: "Descrição de cargo já existe."},
                 validate: {
-                    notEmpty: { msg: "Cargo não deve estar vazio." },
+                    notEmpty: {msg: "Cargo não deve estar vazio."},
                     is: {
                         args: /^[a-zA-ZÀ-ÖØ-öø-ÿ.,;'"0-9\s-]{10,500}$/,
                         msg: "Descrição de cargo deve conter entre 10 e 500 caracteres e incluir apenas caracteres especiais necessários."
@@ -43,7 +43,7 @@ export default class Role extends Model {
             created_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: { isInt: {msg: "Criador de cargo inválido."} }
+                validate: {isInt: {msg: "Criador de cargo inválido."}}
             },
             updated_by: {
                 type: DataTypes.INTEGER,
