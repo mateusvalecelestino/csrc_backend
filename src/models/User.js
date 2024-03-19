@@ -14,7 +14,7 @@ export default class User extends Model {
         this.hasOne(models.Role, {as: "speciality_updater", foreignKey: 'updated_by'}); // Assoc. com a table speciality
         this.hasOne(models.Employee, {as: "employees_created", foreignKey: 'created_by'}); // Assoc. com a table employees
         this.hasOne(models.Employee, {as: "employees_updated", foreignKey: 'updated_by'}); // Assoc. com a table employees
-        this.hasOne(models.Employee, {as: 'employee'}); // Assoc. com a table employee
+        this.hasOne(models.Employee, {as: 'employee', foreignKey: 'user_id'}); // Assoc. com a table employee
     }
 
     static init(sequelize) {
