@@ -10,7 +10,7 @@ class Users {
         try {
             // # → Consulta ao banco de dados
             const {count: totalUsers, rows: data} = await User.findAndCountAll({
-                attributes: ['id', 'name', 'email'],
+                attributes: ['id', 'username', 'user_email'],
                 include: [
                     {
                         model: UserType,
@@ -28,6 +28,7 @@ class Users {
             if (!data) return res.status(httpStatusCode.NO_CONTENT).json({}); // Verificação se há dados
             return res.json({last_page, data});
         } catch (error) {
+            console.log(error);
             errorHandler(error, req, res);
         }
     }
@@ -38,7 +39,7 @@ class Users {
             if (!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "id inválido."});
 
             const user = await User.findByPk(id, {
-                attributes: ['id', 'name', 'email', 'created_at', 'updated_at'],
+                attributes: ['id', 'username', 'user_email', 'created_at', 'updated_at'],
                 include: [
                     {
                         model: UserType,
@@ -48,12 +49,12 @@ class Users {
                     {
                         model: User,
                         as: "creator",
-                        attributes: ['id', 'name']
+                        attributes: ['id', 'username']
                     },
                     {
                         model: User,
                         as: "updater",
-                        attributes: ['id', 'name']
+                        attributes: ['id', 'username']
                     }
                 ],
             });
@@ -79,8 +80,8 @@ class Users {
             req.body.updated_by = req.userId;
 
             const user = await User.create(req.body);
-            const {id, name, email, user_type, created_by} = user;
-            return res.status(httpStatusCode.CREATED).json({user: {id, name, email, user_type, created_by}});
+            const {id, username, user_email, user_type, created_by} = user;
+            return res.status(httpStatusCode.CREATED).json({user: {id, username, user_email, user_type, created_by}});
         } catch (error) {
             errorHandler(error, req, res);
         }
@@ -106,8 +107,8 @@ class Users {
             req.body.updated_by = req.userId;
 
             await user.update(req.body);
-            const {id, name, email, user_type, updated_by} = user;
-            return res.json({user: {id, name, email, user_type, updated_by}});
+            const {id, username, user_email, user_type, updated_by} = user;
+            return res.json({user: {id, username, user_email, user_type, updated_by}});
         } catch (error) {
             errorHandler(error, req, res);
         }
@@ -115,14 +116,19 @@ class Users {
 
     async patch(req, res) {
         try {
-            if (!isInt(req.params.id) || !isInt(req.body.active)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "id inválido."});
+            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "id de usuário inválido."});
+
+            const {active} = req.body;
+
+            if (!Number.isInteger(active)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Estado de usuário inválido."});
+
             const user = await User.findByPk(req.params.id); // Busca o usuário no banco de dados
 
             if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({message: "utilizador não existe."});
-            await user.update({active: req.body.active, updated_by: req.userId});
+            await user.update({ active, updated_by: req.userId});
 
-            const {id, name, email, user_type, updated_by} = user;
-            return res.json({user: {id, name, email, user_type, updated_by}});
+            const {id, username, user_email, user_type, updated_by} = user;
+            return res.json({user: {id, username, user_email, user_type, updated_by}});
         } catch (error) {
             errorHandler(error, req, res);
         }

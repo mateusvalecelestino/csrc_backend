@@ -22,7 +22,7 @@ export default class User extends Model {
         // noinspection SpellCheckingInspection
         super.init({
             // Definição dos campos do model
-            name: {
+            username: {
                 type: DataTypes.STRING(30),
                 defaultValue: "",
                 unique: {msg: "Nome de utilizador já existe."},
@@ -38,7 +38,7 @@ export default class User extends Model {
                     },
                 }
             },
-            email: {
+            user_email: {
                 type: DataTypes.STRING,
                 defaultValue: "",
                 unique: {msg: "Email de utilizador já existe."},
