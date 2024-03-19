@@ -2,7 +2,6 @@ import httpStatusCode from "../utils/HttpStatusCode";
 import User from "../models/User";
 import UserType from "../models/UserType";
 import isInt from "validator/lib/isInt";
-import {Op} from "sequelize";
 import errorHandler from "../middlewares/errorHandler";
 import userTypes from "../utils/UserTypes";
 
