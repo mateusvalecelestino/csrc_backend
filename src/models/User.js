@@ -30,7 +30,7 @@ export default class User extends Model {
                     },
                     is: {
                         args: /^[A-Za-zÀ-ú\s]+$/,
-                        msg: "Nome deve possuir apenas caracteres alfabéticos."
+                        msg: "Nome de utilizador deve possuir apenas caracteres alfabéticos."
                     },
                 }
             },
