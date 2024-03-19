@@ -24,7 +24,7 @@ class Users {
             // Verificação se existe termo de busca e se é um nome
             if(search) {
                 if(!/^[A-Za-zÀ-ú\s]+$/.test(search)) return res.status(httpStatusCode.NO_CONTENT).json({});
-                whereClause.name = { [Op.like]: `${search}%` };
+                whereClause.name = { [Op.like]: `%${search}%` };
             }
 
             // # → Consulta ao banco de dados
