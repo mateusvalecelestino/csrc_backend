@@ -95,6 +95,14 @@ class Users {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de funcionário inválido."});
             const employee = await Employee.findByPk(req.params.id);
 
+            if(!employee) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Funcionário não existe."});
+
+            const {role_id, specialty_id} = req.body;
+
+            // Verifica se o cargo e especialidade enviados existem
+            if(!Number.isInteger(role_id) || !(await Role.findByPk(role_id, { attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo de funcionário inválido."})
+            if(!Number.isInteger(specialty_id) || !(await Specialty.findByPk(specialty_id, { attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade de funcionário inválida."})
+
             // Remoção dos campos não editáveis
             delete req.body.id;
             delete req.body.user_id;
@@ -110,7 +118,6 @@ class Users {
             const {id, full_name, birth_date, gender, order_number, updated_by} = employee;
             return res.json({employee: {id, full_name, birth_date, gender, order_number, updated_by} });
         } catch (error) {
-            console.log(error);
             errorHandler(error, req, res);
         }
     }
