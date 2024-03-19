@@ -8,5 +8,5 @@ const router = new Router;
 router.get('/', auth, admin, getHandler, roleController.index);
 router.get('/:id', auth, admin, roleController.show);
 router.post('/create', auth, admin, roleController.create);
-// router.put('/:id', auth, admin, roleController.put);
+router.put('/:id', auth, admin, roleController.put);
 export default router; // Exporta o router

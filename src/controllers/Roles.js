@@ -64,41 +64,35 @@ class Roles {
             req.body.created_by = req.userId;
             req.body.updated_by = req.userId;
 
-            const user = await Role.create(req.body);
-            const {id, name, desc, created_by} = user;
+            const role = await Role.create(req.body);
+            const {id, name, desc, created_by} = role;
             return res.status(httpStatusCode.CREATED).json({ role: {id, name, desc, created_by} });
         } catch (error) {
-            console.log(error)
             errorHandler(error, req, res);
         }
     }
-    //
-    // async put(req, res) {
-    //     try {
-    //         if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id inválido." });
-    //         const user = await Role.findByPk(req.params.id);
-    //         if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "utilizador não existe." });
-    //
-    //         // Remoção dos campos não editáveis
-    //         delete req.body.id;
-    //         delete req.body.active; // Será editado noutra rota
-    //         delete req.body.created_by;
-    //         delete req.body.created_at;
-    //         delete req.body.updated_at;
-    //
-    //         // Se o usuário não for admin não poderá editar o seu tipo
-    //         if(req.userType !== userTypes.ADMIN) delete req.body.user_type;
-    //
-    //         // Adiciona o usuário que fez a request como actualizador
-    //         req.body.updated_by = req.userId;
-    //
-    //         await user.update(req.body);
-    //         const {id, name, email, user_type, updated_by} = user;
-    //         return res.json({ user: {id, name, email, user_type, updated_by} });
-    //     } catch (error) {
-    //         errorHandler(error, req, res);
-    //     }
-    // }
+
+    async put(req, res) {
+        try {
+            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Id de cargo inválido." });
+            const role = await Role.findByPk(req.params.id);
+            if (!role) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Cargo não existe." });
+
+            // Remoção dos campos não editáveis
+            delete req.body.id;
+            delete req.body.created_by;
+            delete req.body.created_at;
+            delete req.body.updated_at;
+
+            req.body.updated_by = req.userId; // Adiciona o user que realizou a request como actualizador
+
+            await role.update(req.body);
+            const {id, name, desc, updated_by} = role;
+            return res.json({ user: {id, name, desc, updated_by} });
+        } catch (error) {
+            errorHandler(error, req, res);
+        }
+    }
 
 }
 
