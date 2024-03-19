@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('specialities', {
+    await queryInterface.createTable('specialties', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -46,12 +46,12 @@ module.exports = {
     });
 
     // Adição dos índices
-    await queryInterface.addIndex('specialities', ['name']);
-    await queryInterface.addIndex('specialities', ['created_by']);
-    await queryInterface.addIndex('specialities', ['updated_by']);
+    await queryInterface.addIndex('specialties', ['name']);
+    await queryInterface.addIndex('specialties', ['created_by']);
+    await queryInterface.addIndex('specialties', ['updated_by']);
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('specialities');
+    await queryInterface.dropTable('specialties');
   }
 };

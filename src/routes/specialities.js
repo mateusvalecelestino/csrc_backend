@@ -1,5 +1,5 @@
 import {Router} from "express";
-import specialityController from '../controllers/Specialities';
+import specialityController from '../controllers/specialties';
 import auth from "../middlewares/auth";
 import admin from "../middlewares/admin";
 import getHandler from "../middlewares/getHandler";

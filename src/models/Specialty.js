@@ -1,6 +1,6 @@
 import {DataTypes, Model} from "sequelize";
 
-export default class Speciality extends Model {
+export default class Specialty extends Model {
     // Definição as associações (joins)
     static associate(models) {
         this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'}); // Assoc. com a table users

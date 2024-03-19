@@ -3,12 +3,12 @@ import dbConfig from "../config/database";
 import UserType from "../models/UserType";
 import User from "../models/User";
 import Role from "../models/Role";
-import Speciality from "../models/Speciality";
+import Speciality from "../models/Specialty";
 
 const connection = new Sequelize(dbConfig); // Instância a conn. com a db
 
 // Guarda todos os models da bd
-const models = [UserType, User, Role, Speciality];
+const models = [UserType, User, Role, Specialty];
 
 // Inicia os models com a conexão com o banco e adiciona o hook global
 models.forEach(model => {

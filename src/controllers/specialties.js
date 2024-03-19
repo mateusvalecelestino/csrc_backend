@@ -1,14 +1,14 @@
 import httpStatusCode from "../utils/HttpStatusCode";
-import Speciality from "../models/Speciality";
+import Specialty from "../models/Specialty";
 import User from "../models/User";
 import isInt from "validator/lib/isInt";
 import errorHandler from "../middlewares/errorHandler";
 
-class Specialities {
+class Specialties {
     async index(req, res) {
         try {
             // # → Consulta ao banco de dados
-            const {count: totalSpecialities, rows: data} = await Speciality.findAndCountAll({
+            const {count: totalSpecialties, rows: data} = await Specialty.findAndCountAll({
                 attributes: ['id', 'name'],
                 where: req.whereClause,
                 order: [['id', 'DESC']],
@@ -16,7 +16,7 @@ class Specialities {
                 offset: req.offset
             });
 
-            const last_page = Math.ceil(totalSpecialities / req.size); // Calc. do total de páginas
+            const last_page = Math.ceil(totalSpecialties / req.size); // Calc. do total de páginas
             if (!data) return res.status(httpStatusCode.NO_CONTENT).json({}); // Verificação se há dados
             return res.json({last_page, data});
         } catch (error) {
@@ -29,7 +29,7 @@ class Specialities {
             const {id} = req.params;
             if (!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "id de especialidade inválido."});
 
-            const speciality = await Speciality.findByPk(id, {
+            const specialty = await Specialty.findByPk(id, {
                 attributes: ['id', 'name', 'created_at', 'updated_at'],
                 include: [
                     {
@@ -45,8 +45,8 @@ class Specialities {
                 ],
             });
 
-            if (!speciality) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade não existe."});
-            return res.json(speciality);
+            if (!specialty) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade não existe."});
+            return res.json(specialty);
         } catch (error) {
             errorHandler(error, req, res);
         }
@@ -64,8 +64,8 @@ class Specialities {
             req.body.created_by = req.userId;
             req.body.updated_by = req.userId;
 
-            const speciality = await Speciality.create(req.body);
-            const {id, name, created_by} = speciality;
+            const specialty = await Specialty.create(req.body);
+            const {id, name, created_by} = specialty;
             return res.status(httpStatusCode.CREATED).json({role: {id, name, created_by}});
         } catch (error) {
             errorHandler(error, req, res);
@@ -75,8 +75,8 @@ class Specialities {
     async put(req, res) {
         try {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de especialidade inválido."});
-            const speciality = await Speciality.findByPk(req.params.id);
-            if (!speciality) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade não existe."});
+            const specialty = await Specialty.findByPk(req.params.id);
+            if (!specialty) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade não existe."});
 
             // Remoção dos campos não editáveis
             delete req.body.id;
@@ -86,8 +86,8 @@ class Specialities {
 
             req.body.updated_by = req.userId; // Adiciona o user que realizou a request como actualizador
 
-            await speciality.update(req.body);
-            const {id, name, updated_by} = speciality;
+            await specialty.update(req.body);
+            const {id, name, updated_by} = specialty;
             return res.json({user: {id, name, updated_by}});
         } catch (error) {
             errorHandler(error, req, res);
@@ -96,4 +96,4 @@ class Specialities {
 
 }
 
-export default new Specialities;
+export default new Specialties;
