@@ -9,24 +9,6 @@ import userTypes from "../utils/UserTypes";
 class Users {
     async index(req, res) {
         try {
-            let { size = '10', page = '1', search = '' } = req.query;
-
-            // # → Validação dos parâmetros de carregamento
-            size = parseInt(size);
-            page = parseInt(page);
-            if (isNaN(size) || isNaN(page) || size < 1 || page < 1) {
-                return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Parâmetros de carregamento inválidos." });
-            }
-
-            const offset = (page - 1) * size; // Cálculo do offset
-            const whereClause = {}; // Definição da claúsula where
-
-            // Verificação se existe termo de busca e se é um nome
-            if(search) {
-                if(!/^[A-Za-zÀ-ú\s]+$/.test(search)) return res.status(httpStatusCode.NO_CONTENT).json({});
-                whereClause.name = { [Op.like]: `%${search}%` };
-            }
-
             // # → Consulta ao banco de dados
             const { count: totalUsers, rows: data } = await User.findAndCountAll({
                 attributes: ['id', 'name', 'email'],
@@ -37,13 +19,13 @@ class Users {
                         attributes: ['id', 'name']
                     }
                 ],
-                where: whereClause,
+                where: req.whereClause,
                 order: [['id', 'DESC']],
-                limit: size,
-                offset: offset
+                limit: req.size,
+                offset: req.offset
             });
 
-            const last_page = Math.ceil(totalUsers / size); // Calc. do total de páginas
+            const last_page = Math.ceil(totalUsers / req.size); // Calc. do total de páginas
             if(!data) return res.status(httpStatusCode.NO_CONTENT).json({}); // Verificação se há dados
             return res.json({ last_page, data });
         } catch (error) {
