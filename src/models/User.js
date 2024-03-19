@@ -1,6 +1,5 @@
 import {DataTypes, Model} from "sequelize";
 import bcrypt from 'bcryptjs';
-import {password} from "../config/database";
 
 export default class User extends Model {
     // Definição as associações (joins)
