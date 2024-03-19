@@ -6,6 +6,7 @@ import users from "./src/routes/users";
 import tokens from "./src/routes/tokens";
 import roles from "./src/routes/roles";
 import specialities from "./src/routes/specialities";
+import employees from "./src/routes/employees";
 
 class App {
     constructor() {
@@ -28,6 +29,7 @@ class App {
         this.app.use('/users', users); // rota para gerir usuários
         this.app.use('/roles', roles); // rota para gerir cargos
         this.app.use('/specialities', specialities); // rota para gerir especialidades
+        this.app.use('/employees', employees); // rota para gerir employees
     }
 }
 
