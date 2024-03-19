@@ -15,7 +15,9 @@ export default async (req, res, next) => {
         const userData = jwt.verify(token, process.env.TOKEN_SECRET); // Verifica o token
         const {id, user_type} = userData;
 
-        const user = await User.findByPk(id); // Busca os dados do usuário no banco
+        const user = await User.findByPk(id, {
+            attributes: ['active']
+        }); // Busca os dados do usuário no banco
 
         // Verifica se o usuário ainda é activo no banco
         if (!user || !user.active) return res.status(httpStatusCode.UNAUTHORIZED).json({message: "Acesso negado sua conta foi desactivada."})
@@ -25,6 +27,7 @@ export default async (req, res, next) => {
         req.userType = user_type;
         return next();
     } catch (e) {
+        return res.status(httpStatusCode.SERVER_ERROR).json({e});
         return res.status(httpStatusCode.BAD_REQUEST).json({message: "Token expirado ou inválido."});
     }
 }

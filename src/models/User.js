@@ -5,16 +5,16 @@ import Employee from "./Employee";
 export default class User extends Model {
     // Definição as associações (joins)
     static associate(models) {
-        this.belongsTo(models.UserType, {as: "type", foreignKey: 'user_type'}); // Assoc. com a table user_type
+        this.belongsTo(models.UserType, { as: 'type', foreignKey: 'user_type' }); // Assoc. com a table user_type
         this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'}); // Assoc. com a própria table
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'}); // Assoc. com a própria table
-        this.belongsTo(models.Role, {as: "role_creator", foreignKey: 'created_by'}); // Assoc. com a table roles
-        this.belongsTo(models.Role, {as: "role_updater", foreignKey: 'updated_by'}); // Assoc. com a table roles
-        this.belongsTo(models.Role, {as: "speciality_creator", foreignKey: 'created_by'}); // Assoc. com a table speciality
-        this.belongsTo(models.Role, {as: "speciality_updater", foreignKey: 'updated_by'}); // Assoc. com a table speciality
-        this.belongsTo(models.Employee, {as: "employees_creator", foreignKey: 'created_by'}); // Assoc. com a table employees
-        this.belongsTo(models.Employee, {as: "employees_updater", foreignKey: 'updated_by'}); // Assoc. com a table employees
-        this.belongsTo(models.Employee, { as: "employee", foreignKey: 'user_id'} ); // Assoc. com a table employee
+        this.hasOne(models.Role, {as: "role_creator", foreignKey: 'created_by'}); // Assoc. com a table roles
+        this.hasOne(models.Role, {as: "role_updater", foreignKey: 'updated_by'}); // Assoc. com a table roles
+        this.hasOne(models.Role, {as: "speciality_creator", foreignKey: 'created_by'}); // Assoc. com a table speciality
+        this.hasOne(models.Role, {as: "speciality_updater", foreignKey: 'updated_by'}); // Assoc. com a table speciality
+        this.hasOne(models.Employee, {as: "employees_created", foreignKey: 'created_by'}); // Assoc. com a table employees
+        this.hasOne(models.Employee, {as: "employees_updated", foreignKey: 'updated_by'}); // Assoc. com a table employees
+        this.hasOne(models.Employee, {as: 'employee'}); // Assoc. com a table employee
     }
 
     static init(sequelize) {

@@ -4,11 +4,11 @@ import bcrypt from 'bcryptjs';
 export default class Employee extends Model {
     // Definição as associações (joins)
     static associate(models) {
-        this.hasOne(models.Role, { as: "role", foreignKey: "role_id" });
-        this.hasOne(models.Specialty, { as: "specialty", foreignKey: "specialty_id" });
-        this.hasOne(models.User, { as: "user", foreignKey: "user_id" });
-        this.belongsTo(models.User, { as: "creator", foreignKey: 'created_by' }); // Associação com a tabela de usuários para o criador
-        this.belongsTo(models.User, { as: "updater", foreignKey: 'updated_by' }); // Associação com a tabela de usuários para o atualizador
+        this.belongsTo(models.Role, {as: 'role'}); // Assoc. com a table roles
+        this.belongsTo(models.Specialty, {as: 'specialty'}); // Assoc. com a table specialties
+        this.belongsTo(models.User, {as: 'employee'}); // Assoc. com a table users
+        this.belongsTo(models.User, { as: "creator", foreignKey: 'created_by' });
+        this.belongsTo(models.User, { as: "updater", foreignKey: 'updated_by' });
     }
 
 
