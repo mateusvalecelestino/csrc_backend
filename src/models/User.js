@@ -9,6 +9,8 @@ export default class User extends Model {
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'}); // Assoc. com a própria table
         this.belongsTo(models.Role, {as: "role_creator", foreignKey: 'created_by'}); // Assoc. com a table roles
         this.belongsTo(models.Role, {as: "role_updater", foreignKey: 'updated_by'}); // Assoc. com a table roles
+        this.belongsTo(models.Role, {as: "speciality_creator", foreignKey: 'created_by'}); // Assoc. com a table speciality
+        this.belongsTo(models.Role, {as: "speciality_updater", foreignKey: 'updated_by'}); // Assoc. com a table speciality
     }
 
     static init(sequelize) {
