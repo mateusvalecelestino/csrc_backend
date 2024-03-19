@@ -1,7 +1,7 @@
 import httpStatusCode from "../utils/HttpStatusCode";
 import Role from "../models/Role";
+import User from "../models/User";
 import isInt from "validator/lib/isInt";
-import {Op} from "sequelize";
 import errorHandler from "../middlewares/errorHandler";
 
 class Roles {
@@ -24,38 +24,34 @@ class Roles {
         }
     }
     //
-    // async show(req, res) {
-    //     try {
-    //         const {id} = req.params;
-    //         if(!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id inválido." });
-    //
-    //         const user = await Role.findByPk(id, {
-    //             attributes: ['id', 'name', 'email', 'created_at', 'updated_at'],
-    //             include: [
-    //                 {
-    //                     model: UserType,
-    //                     as: "type",
-    //                     attributes: ['id', 'name']
-    //                 },
-    //                 {
-    //                     model: Role,
-    //                     as: "creator",
-    //                     attributes: ['id', 'name']
-    //                 },
-    //                 {
-    //                     model: Role,
-    //                     as: "updater",
-    //                     attributes: ['id', 'name']
-    //                 }
-    //             ],
-    //         });
-    //
-    //         if(!user) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "utilizador não existe." });
-    //         return res.json(user);
-    //     } catch (error) {
-    //         errorHandler(error, req, res);
-    //     }
-    // }
+    async show(req, res) {
+        try {
+            const {id} = req.params;
+            if(!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "id de cargo inválido." });
+
+            const role = await Role.findByPk(id, {
+                attributes: ['id', 'name', 'desc', 'created_at', 'updated_at'],
+                include: [
+                    {
+                        model: User,
+                        as: "creator",
+                        attributes: ['id', 'name']
+                    },
+                    {
+                        model: User,
+                        as: "updater",
+                        attributes: ['id', 'name']
+                    }
+                ],
+            });
+
+            if(!role) return res.status(httpStatusCode.BAD_REQUEST).json({ message: "Cargo não existe." });
+            return res.json(role);
+        } catch (error) {
+            console.log(error);
+            errorHandler(error, req, res);
+        }
+    }
     //
     // async create(req, res) {
     //     try {
