@@ -7,6 +7,8 @@ export default class User extends Model {
         this.belongsTo(models.UserType, {as: "type", foreignKey: 'user_type'}); // Assoc. com a table user_type
         this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'}); // Assoc. com a própria table
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'}); // Assoc. com a própria table
+        this.belongsTo(models.Role, {as: "role_creator", foreignKey: 'created_by'}); // Assoc. com a table roles
+        this.belongsTo(models.Role, {as: "role_updater", foreignKey: 'updated_by'}); // Assoc. com a table roles
     }
 
     static init(sequelize) {
@@ -17,23 +19,24 @@ export default class User extends Model {
             name: {
                 type: DataTypes.STRING(30),
                 defaultValue: "",
-                unique: { msg: "nome já existe." },
+                unique: { msg: "Nome de utilizador já existe." },
                 validate: {
+                    notEmpty: { msg: "Nome de utilizador não deve estar vazio." },
                     len: {
                         args: [3, 30],
-                        msg: "nome de utilizador deve ter entre 3 e 30 caracteres."
+                        msg: "Nome de utilizador deve ter entre 3 e 30 caracteres."
                     },
                     is: {
                         args: /^[A-Za-zÀ-ú\s]+$/,
-                        msg: "nome deve possuir apenas caracteres alfabéticos."
+                        msg: "Nome deve possuir apenas caracteres alfabéticos."
                     },
                 }
             },
             email: {
                 type: DataTypes.STRING,
                 defaultValue: "",
-                unique: {msg: "email já existe."},
-                validate: {isEmail: {msg: "email inválido."}}
+                unique: {msg: "Email de utilizador já existe."},
+                validate: {isEmail: {msg: "Email de utilizador inválido."}}
             },
             password_hash: {
                 type: DataTypes.STRING,
@@ -45,7 +48,7 @@ export default class User extends Model {
                 validate: {
                     is: {
                         args: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,255})/g,
-                        msg: "senha deve ter no mínimo 8 caracteres, incluindo pelo menos uma letra minúscula, uma letra maiúscula, um número, um caractere especial e deve ter no máximo 255 caracteres."
+                        msg: "Senha de utilizador deve ter no mínimo 8 caracteres, incluindo pelo menos uma letra minúscula, uma letra maiúscula, um número, um caractere especial e deve ter no máximo 255 caracteres."
                     },
                 }
             },
@@ -53,10 +56,10 @@ export default class User extends Model {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
                 validate: {
-                    isInt: {msg: "user_type inválido."},
+                    isInt: {msg: "Tipo de utilizador inválido."},
                     isIn: {
                         args: [[1, 2, 3, 4, 5]],
-                        msg: "user_type inválido."
+                        msg: "Tipo de utilizador inválido."
                     }
                 }
             },
@@ -64,22 +67,22 @@ export default class User extends Model {
                 type: DataTypes.TINYINT,
                 defaultValue: 1,
                 validate: {
-                    isInt: {msg: "estado inválido."},
+                    isInt: { msg: "Estado de utilizador inválido." },
                     isIn: {
                         args: [[0, 1]],
-                        msg: "active inválido."
+                        msg: "Estado de utilizador inválido."
                     }
                 }
             },
             created_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: {isInt: {msg: "criador inválido."}}
+                validate: {isInt: {msg: "Criador de utilizador inválido."}}
             },
             updated_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: {isInt: {msg: "actualizador inválido."}}
+                validate: {isInt: {msg: "Actualizador de utilizador inválido."}}
             },
         }, {
             sequelize,
@@ -87,6 +90,7 @@ export default class User extends Model {
 
         // Cria o hash da senha antes de salvar no banco
         this.addHook('beforeSave', async user => {
+            // Verifica se foi mandada uma senha
             if(user.password) user.password_hash = await bcrypt.hash(user.password, 8);
         })
         return this;
