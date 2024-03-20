@@ -5,7 +5,6 @@ export default class Employee extends Model {
     static associate(models) {
         this.belongsTo(models.Role, {as: 'role'}); // Assoc. com a table roles
         this.belongsTo(models.Specialty, {as: 'specialty'}); // Assoc. com a table specialties
-        this.hasOne(models.EmployeeContact, {as: 'contact'}); // Assoc. com a table employees_contacts
         this.belongsTo(models.User, {as: 'user'}); // Assoc. com a table users
         this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'});
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'});
@@ -104,19 +103,19 @@ export default class Employee extends Model {
                 }
             },
             email: {
-                type: DataTypes.VIRTUAL,
+                type: DataTypes.STRING,
                 defaultValue: "",
                 unique: {msg: "Email de funcionário já existe."},
-                validate: { isEmail: {msg: "Email inválido."} }
+                validate: {isEmail: {msg: "Email inválido."}}
             },
             tel: {
-                type: DataTypes.VIRTUAL,
+                type: DataTypes.STRING(20),
                 defaultValue: "",
                 unique: {msg: "Telefone de funcionário já existe."},
                 validate: {
                     notEmpty: {msg: "Telefone de funcionário não deve estar vazio."},
                     len: {
-                        args: [12, 20],
+                        args: [11, 20],
                         msg: "Telefone deve possuir entre 12 e 20 caracteres."
                     }
                 }
@@ -177,7 +176,7 @@ export default class Employee extends Model {
                     } catch (error) {
                         throw error;
                     }
-                }
+                },
             }
         });
         return this;
