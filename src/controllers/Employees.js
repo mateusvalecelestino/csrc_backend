@@ -160,14 +160,14 @@ class Users {
         try {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de funcionário inválido."});
 
-            const { active } = req.body;
+            const {active} = req.body;
 
-            if(!Number.isInteger(active)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Estado de utilizador inválido."});
+            if (!Number.isInteger(active)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Estado de utilizador inválido."});
 
             const user = await Employee.findByPk(req.params.id, {attributes: ['id']});
 
             if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Funcionário não existe."});
-            await user.update({ active, updated_by: req.userId});
+            await user.update({active, updated_by: req.userId});
 
             const {id, full_name, updated_by} = user;
             return res.json({employee: {id, full_name, active, updated_by}});

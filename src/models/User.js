@@ -1,11 +1,10 @@
 import {DataTypes, Model} from "sequelize";
 import bcrypt from 'bcryptjs';
-import Employee from "./Employee";
 
 export default class User extends Model {
     // Definição as associações (joins)
     static associate(models) {
-        this.belongsTo(models.UserType, { as: 'type', foreignKey: 'user_type' }); // Assoc. com a table user_type
+        this.belongsTo(models.UserType, {as: 'type', foreignKey: 'user_type'}); // Assoc. com a table user_type
         this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'}); // Assoc. com a própria table
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'}); // Assoc. com a própria table
         this.hasOne(models.Role, {as: "role_creator", foreignKey: 'created_by'}); // Assoc. com a table roles
@@ -93,7 +92,7 @@ export default class User extends Model {
         }, {
             sequelize,
             hooks: {
-                async beforeSave(user){
+                async beforeSave(user) {
                     if (user.password) user.password_hash = await bcrypt.hash(user.password, 8);
                     return user;
                 }

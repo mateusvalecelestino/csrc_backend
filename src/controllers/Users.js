@@ -104,7 +104,7 @@ class Users {
             const user = await User.findByPk(req.params.id); // Busca o usuário no banco de dados
 
             if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({message: "utilizador não existe."});
-            await user.update({ active, updated_by: req.userId});
+            await user.update({active, updated_by: req.userId});
 
             const {id, username, user_email, user_type, updated_by} = user;
             return res.json({user: {id, username, user_email, user_type, updated_by}});

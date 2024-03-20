@@ -2,7 +2,9 @@ import Sequelize, {Model} from "sequelize"; // Import do Sequelize e o model
 
 export default class UserType extends Model {
     // Classe representando o modelo UserType
-    static associate(models) { this.hasMany(models.User, {as: 'type', foreignKey: 'user_type'}) }
+    static associate(models) {
+        this.hasMany(models.User, {as: 'type', foreignKey: 'user_type'})
+    }
 
     // Método estático para inicializar o modelo UserType
     static init(sequelize) {
