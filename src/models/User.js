@@ -92,14 +92,13 @@ export default class User extends Model {
             },
         }, {
             sequelize,
+            hooks: {
+                async beforeSave(user){
+                    if (user.password) user.password_hash = await bcrypt.hash(user.password, 8);
+                    return user;
+                }
+            }
         });
-
-        // Cria o hash da senha antes de salvar no banco
-        this.addHook('beforeSave', async user => {
-            // Verifica se foi mandada uma senha
-            if (user.password) user.password_hash = await bcrypt.hash(user.password, 8);
-        })
-        return this;
     }
 
     // Verifica se a senha enviada pelo usuário bate com a hash
