@@ -3,7 +3,7 @@ import Sequelize, {DataTypes, Model} from "sequelize"; // Import do Sequelize e 
 export default class PatientAddress extends Model {
     // Classe representando o modelo PatientAddress
     static associate(models) {
-        this.belongsTo(models.Patient, {as: 'patient'});
+        this.belongsTo(models.Patient, {as: 'patient', foreignKey: 'patient_id'});
     }
 
     // Método estático para inicializar o modelo PatientAddress
