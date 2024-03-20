@@ -29,16 +29,6 @@ module.exports = {
                 allowNull: false,
                 unique: true
             },
-            email: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                unique: true
-            },
-            tel: {
-                type: Sequelize.STRING(20),
-                allowNull: false,
-                unique: true
-            },
             role_id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
