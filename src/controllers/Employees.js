@@ -156,20 +156,25 @@ class Users {
         }
     }
 
-    // async patch(req, res) {
-    //     try {
-    //         if (!isInt(req.params.id) || !isInt(req.body.active)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "id inválido."});
-    //         const user = await Employee.findByPk(req.params.id); // Busca o usuário no banco de dados
-    //
-    //         if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({message: "utilizador não existe."});
-    //         await user.update({active: req.body.active, updated_by: req.userId});
-    //
-    //         const {id, name, email, user_type, updated_by} = user;
-    //         return res.json({user: {id, name, email, user_type, updated_by}});
-    //     } catch (error) {
-    //         errorHandler(error, req, res);
-    //     }
-    // }
+    async patch(req, res) {
+        try {
+            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de funcionário inválido."});
+
+            const { active } = req.body;
+
+            if(!Number.isInteger(active)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Estado de utilizador inválido."});
+
+            const user = await Employee.findByPk(req.params.id, {attributes: ['id']});
+
+            if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Funcionário não existe."});
+            await user.update({ active, updated_by: req.userId});
+
+            const {id, full_name, updated_by} = user;
+            return res.json({employee: {id, full_name, active, updated_by}});
+        } catch (error) {
+            errorHandler(error, req, res);
+        }
+    }
 
 }
 
