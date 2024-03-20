@@ -85,16 +85,25 @@ export default class Patient extends Model {
             },
             created_by: {
                 type: DataTypes.INTEGER,
-                defaultValue: "",
-                validate: {isInt: {msg: "Criador de paciente inválido."}}
+                defaultValue: ""
             },
             updated_by: {
                 type: DataTypes.INTEGER,
-                defaultValue: "",
-                validate: {isInt: {msg: "Actualizador de paciente inválido."}}
+                defaultValue: ""
             },
         }, {
             sequelize,
+            hooks: {
+                async afterSave(patient, options){
+                    const t = options.transaction;
+                    try {
+                        const addressData = {street: patient.street, patient_id: patient.id};
+                        await this.sequelize.models.PatientAddress.create(addressData, {transaction: t});
+                    }catch (e){
+                        throw (e);
+                    }
+                }
+            }
         });
         return this;
     }
