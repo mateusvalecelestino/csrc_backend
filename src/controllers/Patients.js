@@ -4,6 +4,7 @@ import Patient from "../models/Patient";
 import httpStatusCode from "../utils/HttpStatusCode";
 import isInt from "validator/lib/isInt";
 import {Op} from "sequelize";
+import PatientAddress from "../models/PatientAddress";
 
 class Patients {
     // async index(req, res) {
@@ -25,52 +26,43 @@ class Patients {
     //         errorHandler(error, req, res);
     //     }
     // }
-    //
-    // async show(req, res) {
-    //     try {
-    //         const {id} = req.params;
-    //         if (!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de paciente inválido."});
-    //
-    //         const employee = await Employee.findByPk(id, {
-    //             attributes: ['id', 'full_name', 'birth_date', 'gender', 'order_number', 'created_at', 'updated_at'],
-    //             include: [
-    //                 {
-    //                     model: Role,
-    //                     as: "role",
-    //                     attributes: ['id', 'name']
-    //                 },
-    //                 {
-    //                     model: Specialty,
-    //                     as: "specialty",
-    //                     attributes: ['id', 'name']
-    //                 },
-    //                 {
-    //                     model: User,
-    //                     as: "user",
-    //                     attributes: ['id', 'username']
-    //                 },
-    //                 {
-    //                     model: User,
-    //                     as: "creator",
-    //                     attributes: ['id', 'username']
-    //                 },
-    //                 {
-    //                     model: User,
-    //                     as: "updater",
-    //                     attributes: ['id', 'username']
-    //                 }
-    //             ],
-    //         });
-    //
-    //         if (!employee) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Funcionário não existe."});
-    //         return res.json(employee);
-    //     } catch (error) {
-    //         errorHandler(error, req, res);
-    //     }
-    // }
+
+    async show(req, res) {
+        try {
+            const {id} = req.params;
+            if (!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de paciente inválido."});
+
+            const patient = await Patient.findByPk(id, {
+                attributes: ['id', 'full_name', 'fathers_name', 'mothers_name', 'gender', 'birth_date', 'created_at', 'updated_at'],
+                include: [
+                    {
+                        model: Employee,
+                        as: "creator",
+                        attributes: ['id', 'full_name']
+                    },
+                    {
+                        model: Employee,
+                        as: "updater",
+                        attributes: ['id', 'full_name']
+                    },
+                    {
+                        model: PatientAddress,
+                        as: "address",
+                        attributes: ['id', 'street']
+                    }
+                ],
+            });
+
+            if (!patient) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Paciente não existe."});
+            return res.json(patient);
+        } catch (error) {
+            console.log(error);
+            errorHandler(error, req, res);
+        }
+    }
 
     async create(req, res) {
-        const t = await Employee.sequelize.transaction(); // ínicio da transaction
+        const t = await Patient.sequelize.transaction(); // ínicio da transaction
         try {
             // Remoção de campos não definíveis
             delete req.body.id;
@@ -109,7 +101,7 @@ class Patients {
 
 
     async put(req, res) {
-        const t = await Employee.sequelize.transaction();
+        const t = await Patient.sequelize.transaction();
         try {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de paciente inválido."});
             const patient = await Patient.findByPk(req.params.id);
@@ -152,7 +144,7 @@ class Patients {
     }
 
     async delete(req, res) {
-        const t = await Employee.sequelize.transaction();
+        const t = await Patient.sequelize.transaction();
         try {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de paciente inválido."});
             const patient = await Patient.findByPk(req.params.id);

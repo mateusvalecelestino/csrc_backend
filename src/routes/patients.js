@@ -6,7 +6,7 @@ import recepcionista from "../middlewares/recepcionista"; // Importa o objecto c
 const router = new Router;
 
 // router.get('/', auth, admin, getHandler, patientController.index);
-// router.get('/:id', auth, admin, patientController.show);
+router.get('/:id', auth, recepcionista, patientController.show);
 router.post('/create', auth, recepcionista, patientController.create);
 router.put('/:id', auth, recepcionista, patientController.put);
 router.delete('/:id', auth, recepcionista, patientController.delete);
