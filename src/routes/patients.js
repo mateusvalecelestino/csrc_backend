@@ -8,5 +8,5 @@ const router = new Router;
 // router.get('/', auth, admin, getHandler, patientController.index);
 // router.get('/:id', auth, admin, patientController.show);
 router.post('/create', auth, recepcionista, patientController.create);
-// router.put('/:id', auth, admin, patientController.put);
+router.put('/:id', auth, recepcionista, patientController.put);
 export default router; // Exporta o router

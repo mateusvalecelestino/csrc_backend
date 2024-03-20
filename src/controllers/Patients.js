@@ -2,6 +2,8 @@ import Employee from "../models/Employee";
 import errorHandler from "../middlewares/errorHandler";
 import Patient from "../models/Patient";
 import httpStatusCode from "../utils/HttpStatusCode";
+import isInt from "validator/lib/isInt";
+import {Op} from "sequelize";
 
 class Patients {
     // async index(req, res) {
@@ -27,7 +29,7 @@ class Patients {
     // async show(req, res) {
     //     try {
     //         const {id} = req.params;
-    //         if (!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de funcionário inválido."});
+    //         if (!isInt(id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de paciente inválido."});
     //
     //         const employee = await Employee.findByPk(id, {
     //             attributes: ['id', 'full_name', 'birth_date', 'gender', 'order_number', 'created_at', 'updated_at'],
@@ -92,9 +94,11 @@ class Patients {
                 transaction: t
             });
 
+            // Verifica se o paciente já existe
             if (!created) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Paciente já existe."});
 
             await t.commit(); // Commit da transaction
+
             const {full_name, fathers_name, mothers_name, gender, birth_date, street, created_by} = patient;
             return res.json({patient: {full_name, fathers_name, mothers_name, gender, birth_date, street, created_by}});
         } catch (error) {
@@ -104,49 +108,49 @@ class Patients {
     }
 
 
-    // async put(req, res) {
-    //     const t = await Employee.sequelize.transaction();
-    //     try {
-    //         if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de funcionário inválido."});
-    //         const employee = await Employee.findByPk(req.params.id);
-    //         if (!employee) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Funcionário não existe."});
-    //
-    //         const {role_id, specialty_id} = req.body;
-    //
-    //         // Verifica se o cargo e especialidade enviados existem
-    //         if (!Number.isInteger(role_id) || !(await Role.findByPk(role_id, {attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo de funcionário inválido."})
-    //         if (!Number.isInteger(specialty_id) || !(await Specialty.findByPk(specialty_id, {attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade de funcionário inválida."})
-    //
-    //         // Remoção de campos não definíveis
-    //         delete req.body.id;
-    //         delete req.body.active;
-    //         delete req.body.user_id;
-    //         delete req.body.created_by;
-    //
-    //         // Adição dos dados do criador
-    //         req.body.updated_by = req.userId;
-    //
-    //         // Update do employee
-    //         await employee.update(req.body, {transaction: t});
-    //
-    //         const {id, full_name, birth_date, gender, order_number} = employee;
-    //         await t.commit(); // Finalização da transaction
-    //         return res.json({
-    //             employee: {
-    //                 id,
-    //                 full_name,
-    //                 birth_date,
-    //                 gender,
-    //                 order_number
-    //             }
-    //         });
-    //
-    //     } catch (error) {
-    //         console.log(error);
-    //         await t.rollback(); // Rollback da transaction
-    //         errorHandler(error, req, res);
-    //     }
-    // }
+    async put(req, res) {
+        const t = await Employee.sequelize.transaction();
+        try {
+            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de paciente inválido."});
+            const patient = await Patient.findByPk(req.params.id);
+            if (!patient) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Paciente não existe."});
+
+            // Remoção de campos não definíveis
+            delete req.body.created_by;
+            delete req.body.created_at;
+            delete req.body.updated_at;
+
+            // Verifica se existem outros pacientes com dados similares
+            const similarPatients = await Patient.findAll({
+                where: {
+                    id: {[Op.ne]: req.params.id}, // Busca por todos os pacientes excepto o paciente que está sendo actualizado
+                    full_name: req.body.full_name,
+                    fathers_name: req.body.fathers_name,
+                    mothers_name: req.body.mothers_name,
+                    gender: req.body.gender,
+                    birth_date: req.body.birth_date
+                }
+            });
+
+            // Verifica se foram encontrados pacientes com dados similares
+            if (similarPatients.length > 0) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Já existe paciente com dados similares."});
+
+            // Adição dos dados do actualizador
+            req.body.updated_by = req.userEmployee.id;
+
+            // Update do patient
+            await patient.update(req.body, {transaction: t});
+
+            await t.commit(); // Commit da transaction
+            const {full_name, fathers_name, mothers_name, gender, birth_date, street, updated_by} = patient;
+            return res.json({patient: {full_name, fathers_name, mothers_name, gender, birth_date, street, updated_by}});
+
+        } catch (error) {
+            console.log(error);
+            await t.rollback(); // Rollback da transaction
+            errorHandler(error, req, res);
+        }
+    }
 
 }
 
