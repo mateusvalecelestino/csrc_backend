@@ -157,6 +157,7 @@ class Users {
     }
 
     async patch(req, res) {
+        const t = await Employee.sequelize.transaction();
         try {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de funcionário inválido."});
 
@@ -167,11 +168,12 @@ class Users {
             const user = await Employee.findByPk(req.params.id, {attributes: ['id']});
 
             if (!user) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Funcionário não existe."});
-            await user.update({active, updated_by: req.userId});
-
+            await user.update({active, updated_by: req.userId}, {transaction: t});
+            await t.commit();
             const {id, full_name, updated_by} = user;
             return res.json({employee: {id, full_name, active, updated_by}});
         } catch (error) {
+            await t.rollback();
             errorHandler(error, req, res);
         }
     }

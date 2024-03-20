@@ -53,6 +53,7 @@ class Roles {
     }
 
     async create(req, res) {
+        const t = await Role.sequelize.transaction();
         try {
 
             // Remoção dos campos não criáveis
@@ -64,15 +65,18 @@ class Roles {
             req.body.created_by = req.userId;
             req.body.updated_by = req.userId;
 
-            const role = await Role.create(req.body);
+            const role = await Role.create(req.body, {transaction: t});
+            await t.commit();
             const {id, name, desc, created_by} = role;
             return res.status(httpStatusCode.CREATED).json({role: {id, name, desc, created_by}});
         } catch (error) {
+            await t.rollback();
             errorHandler(error, req, res);
         }
     }
 
     async put(req, res) {
+        const t = await Role.sequelize.transaction();
         try {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de cargo inválido."});
             const role = await Role.findByPk(req.params.id);
@@ -86,10 +90,12 @@ class Roles {
 
             req.body.updated_by = req.userId; // Adiciona o user que realizou a request como actualizador
 
-            await role.update(req.body);
+            await role.update(req.body, {transaction: t});
+            await t.commit();
             const {id, name, desc, updated_by} = role;
             return res.json({user: {id, name, desc, updated_by}});
         } catch (error) {
+            await t.rollback();
             errorHandler(error, req, res);
         }
     }

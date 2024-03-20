@@ -53,8 +53,8 @@ class Specialties {
     }
 
     async create(req, res) {
+        const t = await Specialty.sequelize.transaction();
         try {
-
             // Remoção dos campos não criáveis
             delete req.body.id;
             delete req.body.created_at;
@@ -64,10 +64,12 @@ class Specialties {
             req.body.created_by = req.userId;
             req.body.updated_by = req.userId;
 
-            const specialty = await Specialty.create(req.body);
+            const specialty = await Specialty.create(req.body, {transaction: t});
+            await t.commit();
             const {id, name, created_by} = specialty;
             return res.status(httpStatusCode.CREATED).json({role: {id, name, created_by}});
         } catch (error) {
+            await t.rollback();
             errorHandler(error, req, res);
         }
     }
