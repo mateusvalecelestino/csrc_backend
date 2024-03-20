@@ -66,27 +66,6 @@ class Users {
         }
     }
 
-    async create(req, res) {
-        try {
-
-            // Remoção dos campos não criáveis
-            delete req.body.id;
-            delete req.body.active;
-            delete req.body.created_at;
-            delete req.body.updated_at;
-
-            // Adiciona o usuário que fez a request como criador e actualizador
-            req.body.created_by = req.userId;
-            req.body.updated_by = req.userId;
-
-            const user = await User.create(req.body);
-            const {id, username, user_email, user_type, created_by} = user;
-            return res.status(httpStatusCode.CREATED).json({user: {id, username, user_email, user_type, created_by}});
-        } catch (error) {
-            errorHandler(error, req, res);
-        }
-    }
-
     async put(req, res) {
         try {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "id inválido."});
