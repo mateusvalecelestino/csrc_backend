@@ -27,7 +27,6 @@ export default async (req, res, next) => {
         req.userType = user_type;
         return next();
     } catch (e) {
-        return res.status(httpStatusCode.SERVER_ERROR).json({e});
         return res.status(httpStatusCode.BAD_REQUEST).json({message: "Token expirado ou inválido."});
     }
 }
