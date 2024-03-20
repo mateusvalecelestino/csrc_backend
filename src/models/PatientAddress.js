@@ -29,6 +29,7 @@ export default class PatientAddress extends Model {
         }, {
             sequelize, // Opção para passar a conexão com o banco de dados
             timestamps: false, // Desabilita o registo de criação e update
+            tableName: 'patients_addresses', // Definindo o nome da tabela explicitamente
         });
         return this; // Retorna a própria classe para permitir encadeamento de métodos
     }
