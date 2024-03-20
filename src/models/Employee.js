@@ -180,6 +180,15 @@ export default class Employee extends Model {
                         throw error;
                     }
                 },
+                async afterSave(employee, options) {
+                    const t = options.transaction;
+                    try {
+                        const employeeContact = {email: employee.email, tel: employee.tel, employee_id: employee.id};
+                        await this.sequelize.models.EmployeeContact.create(employeeContact, {transaction: t});
+                    } catch (e) {
+                        throw (e);
+                    }
+                }
             }
         });
         return this;
