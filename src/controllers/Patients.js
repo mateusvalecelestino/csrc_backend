@@ -1,7 +1,7 @@
-import httpStatusCode from "../utils/HttpStatusCode";
 import Employee from "../models/Employee";
-import isInt from "validator/lib/isInt";
 import errorHandler from "../middlewares/errorHandler";
+import Patient from "../models/Patient";
+import httpStatusCode from "../utils/HttpStatusCode";
 
 class Patients {
     // async index(req, res) {
@@ -68,7 +68,7 @@ class Patients {
     // }
 
     async create(req, res) {
-        const t = await Employee.sequelize.transaction();
+        const t = await Employee.sequelize.transaction(); // ínicio da transaction
         try {
             // Remoção de campos não definíveis
             delete req.body.id;
@@ -76,41 +76,33 @@ class Patients {
             delete req.body.updated_at;
 
             // Adição dos dados do criador
-            req.body.created_by = req.userEmployee;
-            req.body.updated_by = req.userEmployee;
+            req.body.created_by = req.userEmployee.id;
+            req.body.updated_by = req.userEmployee.id;
 
-            return res.json({message: "working", result: req.userEmployee});
+            // Busca ou cria o paciente
+            const [patient, created] = await Patient.findOrCreate({
+                where: {
+                    full_name: req.body.full_name,
+                    fathers_name: req.body.fathers_name,
+                    mothers_name: req.body.mothers_name,
+                    gender: req.body.gender,
+                    birth_date: req.body.birth_date
+                },
+                defaults: req.body, // Caso o paciente não seja encontrado, insira os dados
+                transaction: t
+            });
 
-            // // Criação do model Employee
-            // const employee = Employee.build(req.body);
-            //
-            // // Realiza a validação do model excluindo o campo user_id
-            // await employee.validate({skip: ['user_id']});
-            //
-            // // Verificação de existência de role e specialty
-            // if (!await Role.findByPk(employee.role_id, {attributes: ['id']})) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo de funcionário não existe."})
-            // if (!await Specialty.findByPk(employee.specialty_id, {attributes: ['id']})) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade de funcionário não existe."})
-            //
-            // // Salva o employee
-            // await employee.save({transaction: t});
-            //
-            // const {id, full_name, birth_date, gender, order_number, user_id} = employee;
-            // await t.commit(); // Finalização da transaction
-            // return res.status(httpStatusCode.CREATED).json({
-            //     employee: {
-            //         id,
-            //         full_name,
-            //         birth_date,
-            //         gender,
-            //         order_number,
-            //         user_id
-            //     }
-            // });
+            if (!created) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Paciente já existe."});
+
+            await t.commit(); // Commit da transaction
+            const {full_name, fathers_name, mothers_name, gender, birth_date, street, created_by} = patient;
+            return res.json({patient: {full_name, fathers_name, mothers_name, gender, birth_date, street, created_by}});
         } catch (error) {
             await t.rollback(); // Rollback da transaction
             errorHandler(error, req, res);
         }
     }
+
 
     // async put(req, res) {
     //     const t = await Employee.sequelize.transaction();
