@@ -8,6 +8,8 @@ export default class Employee extends Model {
         this.belongsTo(models.User, {as: 'user'}); // Assoc. com a table users
         this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'});
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'});
+        this.hasOne(models.Patient, {as: "employee_creator", foreignKey: 'created_by'});
+        this.hasOne(models.Patient, {as: "employee_updater", foreignKey: 'updated_by'});
     }
 
     static init(sequelize) {
