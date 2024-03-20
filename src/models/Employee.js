@@ -103,6 +103,24 @@ export default class Employee extends Model {
                     }
                 }
             },
+            email: {
+                type: DataTypes.VIRTUAL,
+                defaultValue: "",
+                unique: {msg: "Email de funcionário já existe."},
+                validate: { isEmail: {msg: "Email inválido."} }
+            },
+            tel: {
+                type: DataTypes.VIRTUAL,
+                defaultValue: "",
+                unique: {msg: "Telefone de funcionário já existe."},
+                validate: {
+                    notEmpty: {msg: "Telefone de funcionário não deve estar vazio."},
+                    len: {
+                        args: [12, 20],
+                        msg: "Telefone deve possuir entre 12 e 20 caracteres."
+                    }
+                }
+            },
             role_id: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
