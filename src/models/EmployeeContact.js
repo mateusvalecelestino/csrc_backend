@@ -11,24 +11,8 @@ export default class EmployeeContact extends Model {
         // noinspection SpellCheckingInspection
         super.init({
             // Definição dos campos do model
-            email: {
-                type: DataTypes.STRING,
-                defaultValue: "",
-                unique: {msg: "Email de funcionário já existe."},
-                validate: { isEmail: {msg: "Email inválido."} }
-            },
-            tel: {
-                type: DataTypes.STRING(20),
-                defaultValue: "",
-                unique: {msg: "Telefone de funcionário já existe."},
-                validate: {
-                    notEmpty: {msg: "Telefone de funcionário não deve estar vazio."},
-                    len: {
-                        args: [12, 20],
-                        msg: "Telefone deve possuir entre 12 e 20 caracteres."
-                    }
-                }
-            },
+            email: { type: DataTypes.STRING },
+            tel: { type: DataTypes.STRING(20) },
             employee_id: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
@@ -36,6 +20,7 @@ export default class EmployeeContact extends Model {
             },
         }, {
             sequelize,
+            timestamps: false, // Desabilita o registo de criação e update
         });
         return this;
     }

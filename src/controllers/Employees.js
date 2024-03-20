@@ -6,7 +6,7 @@ import errorHandler from "../middlewares/errorHandler";
 import Specialty from "../models/Specialty";
 import User from "../models/User";
 
-class Users {
+class Employees {
     async index(req, res) {
         try {
             // # → Consulta ao banco de dados
@@ -181,4 +181,4 @@ class Users {
 
 }
 
-export default new Users; // exporta o objecto da classe
+export default new Employees; // exporta o objecto da classe
