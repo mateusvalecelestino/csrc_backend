@@ -40,7 +40,7 @@ class Tokens {
                 id,
                 username,
                 user_type,
-                employee
+                employee: employee.id
             }, process.env.TOKEN_SECRET, {expiresIn: process.env.TOKEN_EXPIRATION});
             return res.json({token});
         } catch (error) {
