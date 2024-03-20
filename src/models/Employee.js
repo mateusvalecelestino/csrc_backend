@@ -5,11 +5,11 @@ export default class Employee extends Model {
     static associate(models) {
         this.belongsTo(models.Role, {as: 'role'}); // Assoc. com a table roles
         this.belongsTo(models.Specialty, {as: 'specialty'}); // Assoc. com a table specialties
+        this.hasOne(models.EmployeeContact, {as: 'contact'}); // Assoc. com a table employees_contacts
         this.belongsTo(models.User, {as: 'user'}); // Assoc. com a table users
         this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'});
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'});
     }
-
 
     static init(sequelize) {
         // Chama o método init da classe pai para definir os campos do modelo
