@@ -7,11 +7,12 @@ import Specialty from "../models/Specialty";
 import Employee from "../models/Employee";
 import Patient from "../models/Patient";
 import PatientAddress from "../models/PatientAddress";
+import EmployeeContact from "../models/EmployeeContact";
 
 const connection = new Sequelize(dbConfig); // Instância a conn. com a db
 
 // Guarda todos os models da bd
-const models = [UserType, User, Role, Specialty, Employee, Patient, PatientAddress];
+const models = [UserType, User, Role, Specialty, Employee, Patient, PatientAddress, EmployeeContact];
 
 // Inicia os models com a conexão com o banco e adiciona o hook global
 models.forEach(model => {
