@@ -35,12 +35,12 @@ class Specialties {
                     {
                         model: User,
                         as: "creator",
-                        attributes: ['id', 'name']
+                        attributes: ['id', 'username']
                     },
                     {
                         model: User,
                         as: "updater",
-                        attributes: ['id', 'name']
+                        attributes: ['id', 'username']
                     }
                 ],
             });

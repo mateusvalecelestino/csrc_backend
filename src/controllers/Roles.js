@@ -35,12 +35,12 @@ class Roles {
                     {
                         model: User,
                         as: "creator",
-                        attributes: ['id', 'name']
+                        attributes: ['id', 'username']
                     },
                     {
                         model: User,
                         as: "updater",
-                        attributes: ['id', 'name']
+                        attributes: ['id', 'username']
                     }
                 ],
             });
@@ -48,6 +48,7 @@ class Roles {
             if (!role) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo não existe."});
             return res.json(role);
         } catch (error) {
+            console.log(error);
             errorHandler(error, req, res);
         }
     }

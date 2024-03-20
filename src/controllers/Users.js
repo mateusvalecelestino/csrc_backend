@@ -4,7 +4,6 @@ import UserType from "../models/UserType";
 import isInt from "validator/lib/isInt";
 import errorHandler from "../middlewares/errorHandler";
 import userTypes from "../utils/UserTypes";
-import Employee from "../models/Employee";
 
 class Users {
     async index(req, res) {
@@ -112,7 +111,7 @@ class Users {
             await user.update({active, updated_by: req.userId}, {transaction: t});
             await t.commit();
             const {id, username, user_email, user_type, updated_by} = user;
-            return res.json({user: {id, username, user_email, user_type, updated_by}});
+            return res.json({user: {id, username, user_email, user_type, active, updated_by}});
         } catch (error) {
             await t.rollback();
             errorHandler(error, req, res);

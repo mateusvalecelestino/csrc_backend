@@ -22,6 +22,7 @@ class Users {
             if (!data) return res.status(httpStatusCode.NO_CONTENT).json({}); // Verificação se há dados
             return res.json({last_page, data});
         } catch (error) {
+            console.log(error);
             errorHandler(error, req, res);
         }
     }

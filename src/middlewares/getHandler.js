@@ -17,7 +17,17 @@ export default (req, res, next) => {
     // Verificação se existe termo de busca e se é um nome
     if (search) {
         if (!/^[A-Za-zÀ-ú\s]+$/.test(search)) return res.status(httpStatusCode.NO_CONTENT).json({});
-        whereClause.name = {[Op.like]: `%${search}%`};
+
+        // Array de rotas cujo termo de é no campo full_name
+        const fullNamesSearch = ['/employees'];
+
+        if (fullNamesSearch.includes(req.baseUrl)) {
+            whereClause.full_name = {[Op.like]: `%${search}%`};
+        } else if (req.baseUrl === '/users') {
+            whereClause.username = {[Op.like]: `%${search}%`};
+        } else {
+            whereClause.name = {[Op.like]: `%${search}%`};
+        }
     }
 
     // Adiciona os parâmetros de carregamento na requisição
