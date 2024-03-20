@@ -113,10 +113,10 @@ class Users {
     }
 
     async put(req, res) {
+        const t = await Employee.sequelize.transaction();
         try {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de funcionário inválido."});
             const employee = await Employee.findByPk(req.params.id);
-
             if (!employee) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Funcionário não existe."});
 
             const {role_id, specialty_id} = req.body;
@@ -125,21 +125,33 @@ class Users {
             if (!Number.isInteger(role_id) || !(await Role.findByPk(role_id, {attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo de funcionário inválido."})
             if (!Number.isInteger(specialty_id) || !(await Specialty.findByPk(specialty_id, {attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade de funcionário inválida."})
 
-            // Remoção dos campos não editáveis
+            // Remoção de campos não definíveis
             delete req.body.id;
-            delete req.body.user_id;
             delete req.body.active;
+            delete req.body.user_id;
             delete req.body.created_by;
-            delete req.body.created_at;
-            delete req.body.updated_at;
 
-            // Adiciona o usuário que fez a request como actualizador
+            // Adição dos dados do criador
             req.body.updated_by = req.userId;
 
-            await employee.update(req.body);
-            const {id, full_name, birth_date, gender, order_number, updated_by} = employee;
-            return res.json({employee: {id, full_name, birth_date, gender, order_number, updated_by}});
+            // Update do employee
+            await employee.update(req.body, {transaction: t});
+
+            const {id, full_name, birth_date, gender, order_number} = employee;
+            await t.commit(); // Finalização da transaction
+            return res.json({
+                employee: {
+                    id,
+                    full_name,
+                    birth_date,
+                    gender,
+                    order_number
+                }
+            });
+
         } catch (error) {
+            console.log(error);
+            await t.rollback(); // Rollback da transaction
             errorHandler(error, req, res);
         }
     }
