@@ -7,25 +7,24 @@ import {Op} from "sequelize";
 import PatientAddress from "../models/PatientAddress";
 
 class Patients {
-    // async index(req, res) {
-    //     try {
-    //         // # → Consulta ao banco de dados
-    //         const {count: totalEmployees, rows: data} = await Employee.findAndCountAll({
-    //             attributes: ['id', 'full_name', 'birth_date', 'gender', 'order_number'],
-    //             where: req.whereClause,
-    //             order: [['id', 'DESC']],
-    //             limit: req.size,
-    //             offset: req.offset
-    //         });
-    //
-    //         const last_page = Math.ceil(totalEmployees / req.size); // Calc. do total de páginas
-    //         if (!data) return res.status(httpStatusCode.NO_CONTENT).json({}); // Verificação se há dados
-    //         return res.json({last_page, data});
-    //     } catch (error) {
-    //         console.log(error);
-    //         errorHandler(error, req, res);
-    //     }
-    // }
+    async index(req, res) {
+        try {
+            const {count: totalPatients, rows: data} = await Patient.findAndCountAll({
+                attributes: ['id', 'full_name', 'gender', 'birth_date'],
+                where: req.whereClause,
+                order: [['id', 'DESC']],
+                limit: req.size,
+                offset: req.offset
+            });
+
+            const last_page = Math.ceil(totalPatients / req.size); // Calc. do total de páginas
+            if (!data) return res.status(httpStatusCode.NO_CONTENT).json({}); // Verificação se há dados
+            return res.json({last_page, data});
+        } catch (error) {
+            console.log(error);
+            errorHandler(error, req, res);
+        }
+    }
 
     async show(req, res) {
         try {

@@ -19,7 +19,7 @@ export default (req, res, next) => {
         if (!/^[A-Za-zÀ-ú\s]+$/.test(search)) return res.status(httpStatusCode.NO_CONTENT).json({});
 
         // Array de rotas cujo termo de é no campo full_name
-        const fullNamesSearch = ['/employees'];
+        const fullNamesSearch = ['/employees', '/patients'];
 
         if (fullNamesSearch.includes(req.baseUrl)) {
             whereClause.full_name = {[Op.like]: `%${search}%`};
