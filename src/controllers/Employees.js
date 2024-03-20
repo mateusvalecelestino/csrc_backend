@@ -77,6 +77,8 @@ class Employees {
             delete req.body.id;
             delete req.body.active;
             delete req.body.user_id;
+            delete req.body.created_at;
+            delete req.body.updated_at;
 
             // Adição dos dados do criador
             req.body.created_by = req.userId;
@@ -131,6 +133,8 @@ class Employees {
             delete req.body.active;
             delete req.body.user_id;
             delete req.body.created_by;
+            delete req.body.created_at;
+            delete req.body.updated_at;
 
             // Adição dos dados do criador
             req.body.updated_by = req.userId;
