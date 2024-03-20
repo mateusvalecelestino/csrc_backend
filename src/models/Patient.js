@@ -5,7 +5,7 @@ export default class Patient extends Model {
     static associate(models) {
         this.belongsTo(models.Employee, {as: "creator", foreignKey: 'created_by'});
         this.belongsTo(models.Employee, {as: "updater", foreignKey: 'updated_by'});
-        this.hasOne(models.PatientAddress, {as: "patient_address"});
+        this.hasOne(models.PatientAddress, {as: "address"});
     }
 
     static init(sequelize) {
