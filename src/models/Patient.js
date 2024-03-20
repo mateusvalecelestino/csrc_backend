@@ -74,6 +74,15 @@ export default class Patient extends Model {
                 defaultValue: "",
                 validate: {isDate: {msg: "Data de nascimento do paciente inválida."}}
             },
+            street: {
+                type: DataTypes.VIRTUAL,
+                allowNull: false,
+                defaultValue: "",
+                is: {
+                    args: /^[a-zA-ZÀ-ÖØ-öø-ÿ.,;'"0-9\s-]{3,50}$/,
+                    msg: "Nome do bairro deve conter entre 3 e 50 caracteres e incluir apenas caracteres especiais necessários."
+                },
+            },
             created_by: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
