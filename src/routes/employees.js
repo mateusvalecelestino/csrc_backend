@@ -7,7 +7,7 @@ const router = new Router;
 
 router.get('/', auth, admin, getHandler, employeeController.index);
 router.get('/:id', auth, admin, employeeController.show);
-// router.post('/create', auth, admin, employeeController.create);
+router.post('/create', auth, admin, employeeController.create);
 router.put('/:id', auth, admin, employeeController.put);
 // router.patch('/:id/active', auth, admin, employeeController.patch);
 export default router; // Exporta o router
