@@ -47,17 +47,17 @@ class Users {
                     {
                         model: User,
                         as: "user",
-                        attributes: ['id', 'name']
+                        attributes: ['id', 'username']
                     },
                     {
                         model: User,
                         as: "creator",
-                        attributes: ['id', 'name']
+                        attributes: ['id', 'username']
                     },
                     {
                         model: User,
                         as: "updater",
-                        attributes: ['id', 'name']
+                        attributes: ['id', 'username']
                     }
                 ],
             });
@@ -69,39 +69,61 @@ class Users {
         }
     }
 
-    // async create(req, res) {
-    //     try {
-    //
-    //         // Remoção dos campos não criáveis
-    //         delete req.body.id;
-    //         delete req.body.active;
-    //         delete req.body.created_at;
-    //         delete req.body.updated_at;
-    //
-    //         // Adiciona o usuário que fez a request como criador e actualizador
-    //         req.body.created_by = req.userId;
-    //         req.body.updated_by = req.userId;
-    //
-    //         const user = await Employee.create(req.body);
-    //         const {id, name, email, user_type, created_by} = user;
-    //         return res.status(httpStatusCode.CREATED).json({user: {id, name, email, user_type, created_by}});
-    //     } catch (error) {
-    //         errorHandler(error, req, res);
-    //     }
-    // }
+    async create(req, res) {
+        const t = await Employee.sequelize.transaction();
+        try {
+            // Remoção de campos não definíveis
+            delete req.body.id;
+            delete req.body.active;
+            delete req.body.user_id;
+
+            // Adição dos dados do criador
+            req.body.created_by = req.userId;
+            req.body.updated_by = req.userId;
+
+            // Criação do model Employee
+            const employee = Employee.build(req.body);
+
+            // Realiza a validação do model excluindo o campo user_id
+            await employee.validate({skip: ['user_id']});
+
+            // Verificação de existência de role e specialty
+            if (!await Role.findByPk(employee.role_id, {attributes: ['id']})) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo de funcionário não existe."})
+            if (!await Specialty.findByPk(employee.specialty_id, {attributes: ['id']})) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade de funcionário não existe."})
+
+            // Salva o employee
+            await employee.save({transaction: t});
+
+            const {id, full_name, birth_date, gender, order_number, user_id} = employee;
+            await t.commit(); // Finalização da transaction
+            return res.status(httpStatusCode.CREATED).json({
+                employee: {
+                    id,
+                    full_name,
+                    birth_date,
+                    gender,
+                    order_number,
+                    user_id
+                }
+            });
+        } catch (error) {
+            await t.rollback(); // Rollback da transaction
+            errorHandler(error, req, res);
+        }
+    }
 
     async put(req, res) {
         try {
             if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de funcionário inválido."});
             const employee = await Employee.findByPk(req.params.id);
 
-            if(!employee) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Funcionário não existe."});
+            if (!employee) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Funcionário não existe."});
 
             const {role_id, specialty_id} = req.body;
 
             // Verifica se o cargo e especialidade enviados existem
-            if(!Number.isInteger(role_id) || !(await Role.findByPk(role_id, { attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo de funcionário inválido."})
-            if(!Number.isInteger(specialty_id) || !(await Specialty.findByPk(specialty_id, { attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade de funcionário inválida."})
+            if (!Number.isInteger(role_id) || !(await Role.findByPk(role_id, {attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Cargo de funcionário inválido."})
+            if (!Number.isInteger(specialty_id) || !(await Specialty.findByPk(specialty_id, {attributes: ['id']}))) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Especialidade de funcionário inválida."})
 
             // Remoção dos campos não editáveis
             delete req.body.id;
@@ -116,7 +138,7 @@ class Users {
 
             await employee.update(req.body);
             const {id, full_name, birth_date, gender, order_number, updated_by} = employee;
-            return res.json({employee: {id, full_name, birth_date, gender, order_number, updated_by} });
+            return res.json({employee: {id, full_name, birth_date, gender, order_number, updated_by}});
         } catch (error) {
             errorHandler(error, req, res);
         }
