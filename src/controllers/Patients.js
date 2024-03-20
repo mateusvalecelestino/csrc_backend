@@ -146,6 +146,22 @@ class Patients {
             return res.json({patient: {full_name, fathers_name, mothers_name, gender, birth_date, street, updated_by}});
 
         } catch (error) {
+            await t.rollback(); // Rollback da transaction
+            errorHandler(error, req, res);
+        }
+    }
+
+    async delete(req, res) {
+        const t = await Employee.sequelize.transaction();
+        try {
+            if (!isInt(req.params.id)) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Id de paciente inválido."});
+            const patient = await Patient.findByPk(req.params.id);
+            if (!patient) return res.status(httpStatusCode.BAD_REQUEST).json({message: "Paciente não existe."});
+
+            await patient.destroy({transaction: t});
+            await t.commit(); // Commit da transaction
+            return res.status(httpStatusCode.NO_CONTENT).json({});
+        } catch (error) {
             console.log(error);
             await t.rollback(); // Rollback da transaction
             errorHandler(error, req, res);
