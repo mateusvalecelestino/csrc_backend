@@ -141,25 +141,23 @@ export default class Employee extends Model {
         }, {
             sequelize,
             hooks: {
-                // Hook para criar o usuário antes do funcionário
+                // Cria o usuário antes do employee
                 async beforeCreate(employee, options) {
-                    const t = options.transaction; // Transaction enviada da request
+                    const t = options.transaction;
                     try {
-                        // Extracção dos campos de usuário
-                        const {username, user_email, password, user_type, created_by, updated_by} = employee;
+                        const userData = {
+                            username: employee.username,
+                            user_email: employee.user_email,
+                            password: employee.password,
+                            user_type: employee.user_type,
+                            created_by: employee.created_by,
+                            updated_by: employee.updated_by
+                        };
 
-                        // Criação do usuário
-                        const employeeUsers = await this.sequelize.models.User.create({
-                            username,
-                            user_email,
-                            password,
-                            user_type,
-                            created_by,
-                            updated_by
-                        }, {transaction: t});
-                        employee.user_id = employeeUsers.id; // Adição do id do usuário ao employee
-                    } catch (e) {
-                        throw e;
+                        const user = await this.sequelize.models.User.create(userData, {transaction: t});
+                        employee.user_id = user.id;
+                    } catch (error) {
+                        throw error;
                     }
                 }
             }
