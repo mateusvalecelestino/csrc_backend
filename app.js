@@ -7,6 +7,7 @@ import tokens from "./src/routes/tokens";
 import roles from "./src/routes/roles";
 import specialities from "./src/routes/specialities";
 import employees from "./src/routes/employees";
+import patients from "./src/routes/patients";
 
 class App {
     constructor() {
@@ -30,6 +31,7 @@ class App {
         this.app.use('/roles', roles); // rota para gerir cargos
         this.app.use('/specialities', specialities); // rota para gerir especialidades
         this.app.use('/employees', employees); // rota para gerir employees
+        this.app.use('/patients', patients); // rota para gerir pacientes
     }
 }
 
