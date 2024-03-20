@@ -1,5 +1,6 @@
 'use strict';
 
+const {DataTypes} = require("sequelize");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     // Realiza a migration
@@ -25,6 +26,16 @@ module.exports = {
             },
             order_number: {
                 type: Sequelize.STRING(30),
+                allowNull: false,
+                unique: true
+            },
+            email: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                unique: true
+            },
+            tel: {
+                type: Sequelize.STRING(20),
                 allowNull: false,
                 unique: true
             },
