@@ -13,7 +13,7 @@ export default async (req, res, next) => {
     const token = authorization.split(' ')[1]; // Separa o token da palavra Bearer
     try {
         const userData = jwt.verify(token, process.env.TOKEN_SECRET); // Verifica o token
-        const {id, user_type} = userData;
+        const {id, user_type, employee} = userData;
 
         const user = await User.findByPk(id, {
             attributes: ['active']
@@ -25,6 +25,7 @@ export default async (req, res, next) => {
         // Adiciona as info do usuário na requisição
         req.userId = id;
         req.userType = user_type;
+        req.userEmployee = employee;
         return next();
     } catch (e) {
         return res.status(httpStatusCode.BAD_REQUEST).json({message: "Token expirado ou inválido."});
