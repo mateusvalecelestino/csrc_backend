@@ -10,6 +10,7 @@ export default class Employee extends Model {
         this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'});
         this.hasOne(models.Patient, {as: "employee_creator", foreignKey: 'created_by'});
         this.hasOne(models.Patient, {as: "employee_updater", foreignKey: 'updated_by'});
+        this.hasOne(models.EmployeeContact, {as: "contacts", foreignKey: 'employee_id'});
     }
 
     static init(sequelize) {
@@ -105,13 +106,13 @@ export default class Employee extends Model {
                 }
             },
             email: {
-                type: DataTypes.STRING,
+                type: DataTypes.VIRTUAL,
                 defaultValue: "",
                 unique: {msg: "Email de funcionário já existe."},
                 validate: {isEmail: {msg: "Email inválido."}}
             },
             tel: {
-                type: DataTypes.STRING(20),
+                type: DataTypes.VIRTUAL,
                 defaultValue: "",
                 unique: {msg: "Telefone de funcionário já existe."},
                 validate: {
