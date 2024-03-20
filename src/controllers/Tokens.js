@@ -4,6 +4,7 @@ import isEmail from 'validator/lib/isEmail';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import errorHandler from "../middlewares/errorHandler";
+import Employee from "../models/Employee";
 
 class Tokens {
     async create(req, res) {
@@ -19,19 +20,27 @@ class Tokens {
             if (!isEmail(user_email) || !regExStrongPassword.test(password)) return res.status(httpStatusCode.BAD_REQUEST).json(authErrorMessage)
 
             const user = await User.findOne({
+                include: [
+                    {
+                        model: Employee,
+                        as: "employee",
+                        attributes: ['id']
+                    }
+                ],
                 where: {active: 1, user_email},
                 attributes: ['id', 'username', 'password_hash', 'user_type',]
             });
             if (!user) return res.status(httpStatusCode.BAD_REQUEST).json(authErrorMessage);
             if (!(await user.isValidPassword(password))) return res.status(httpStatusCode.BAD_REQUEST).json(authErrorMessage);
 
-            const {id, user_name: username, user_type} = user;
+            const {id, username, user_type, employee} = user;
 
             // Cria o token
             const token = jwt.sign({
                 id,
                 username,
-                user_type
+                user_type,
+                employee
             }, process.env.TOKEN_SECRET, {expiresIn: process.env.TOKEN_EXPIRATION});
             return res.json({token});
         } catch (error) {
