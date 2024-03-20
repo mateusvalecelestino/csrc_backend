@@ -1,5 +1,4 @@
 import {DataTypes, Model} from "sequelize";
-import bcrypt from 'bcryptjs';
 
 export default class Employee extends Model {
     // Definição as associações (joins)
@@ -7,8 +6,8 @@ export default class Employee extends Model {
         this.belongsTo(models.Role, {as: 'role'}); // Assoc. com a table roles
         this.belongsTo(models.Specialty, {as: 'specialty'}); // Assoc. com a table specialties
         this.belongsTo(models.User, {as: 'user'}); // Assoc. com a table users
-        this.belongsTo(models.User, { as: "creator", foreignKey: 'created_by' });
-        this.belongsTo(models.User, { as: "updater", foreignKey: 'updated_by' });
+        this.belongsTo(models.User, {as: "creator", foreignKey: 'created_by'});
+        this.belongsTo(models.User, {as: "updater", foreignKey: 'updated_by'});
     }
 
 
@@ -80,23 +79,24 @@ export default class Employee extends Model {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
                 defaultValue: "",
-                validate: { isDate: { msg: "Data de nascimento de funcionário inválida." } }
+                validate: {isDate: {msg: "Data de nascimento de funcionário inválida."}}
             },
             gender: {
-              type: DataTypes.ENUM('M', 'F'),
-              allowNull: false,
-              validate: {
-                  isIn: {
-                      args: [['M', 'F']],
-                      msg: "Género deve ser M ou F."
-                  }
-              }
+                type: DataTypes.ENUM('M', 'F'),
+                allowNull: false,
+                validate: {
+                    isIn: {
+                        args: [['M', 'F']],
+                        msg: "Género deve ser M ou F."
+                    }
+                }
             },
             order_number: {
                 type: DataTypes.STRING(30),
                 allowNull: false,
+                unique: {msg: "Número de ordem já existe."},
                 validate: {
-                    notEmpty: { msg: "Número de ordem de funcionário não pode ser vazio." },
+                    notEmpty: {msg: "Número de ordem de funcionário não pode ser vazio."},
                     len: {
                         args: [3, 30],
                         msg: "Número de ordem de funcionário deve ter entre 3 e 30 caracteres."
@@ -106,12 +106,12 @@ export default class Employee extends Model {
             role_id: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: { isInt: { msg: "Cargo de funcionário inválido."} }
+                validate: {isInt: {msg: "Cargo de funcionário inválido."}}
             },
             specialty_id: {
                 type: DataTypes.INTEGER,
                 defaultValue: "",
-                validate: { isInt: { msg: "Especialidade de funcionário inválido."} }
+                validate: {isInt: {msg: "Especialidade de funcionário inválido."}}
             },
             user_id: {
                 type: DataTypes.INTEGER,
@@ -140,6 +140,29 @@ export default class Employee extends Model {
             },
         }, {
             sequelize,
+            hooks: {
+                // Hook para criar o usuário antes do funcionário
+                async beforeCreate(employee, options) {
+                    const t = options.transaction; // Transaction enviada da request
+                    try {
+                        // Extracção dos campos de usuário
+                        const {username, user_email, password, user_type, created_by, updated_by} = employee;
+
+                        // Criação do usuário
+                        const employeeUsers = await this.sequelize.models.User.create({
+                            username,
+                            user_email,
+                            password,
+                            user_type,
+                            created_by,
+                            updated_by
+                        }, {transaction: t});
+                        employee.user_id = employeeUsers.id; // Adição do id do usuário ao employee
+                    } catch (e) {
+                        throw e;
+                    }
+                }
+            }
         });
         return this;
     }
