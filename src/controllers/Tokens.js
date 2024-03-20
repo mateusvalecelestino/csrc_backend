@@ -20,17 +20,17 @@ class Tokens {
 
             const user = await User.findOne({
                 where: {active: 1, user_email},
-                attributes: ['id', 'user_name', 'password_hash', 'user_type',]
+                attributes: ['id', 'username', 'password_hash', 'user_type',]
             });
             if (!user) return res.status(httpStatusCode.BAD_REQUEST).json(authErrorMessage);
             if (!(await user.isValidPassword(password))) return res.status(httpStatusCode.BAD_REQUEST).json(authErrorMessage);
 
-            const {id, user_name, user_type} = user;
+            const {id, user_name: username, user_type} = user;
 
             // Cria o token
             const token = jwt.sign({
                 id,
-                user_name,
+                username,
                 user_type
             }, process.env.TOKEN_SECRET, {expiresIn: process.env.TOKEN_EXPIRATION});
             return res.json({token});
