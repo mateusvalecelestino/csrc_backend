@@ -9,8 +9,6 @@ module.exports = {
                 birth_date: "2024-03-19",
                 gender: "M",
                 order_number: "1234567890",
-                email: "teste@teste.com",
-                tel: "123-123-123",
                 role_id: "1",
                 specialty_id: "1",
                 user_id: "5",
