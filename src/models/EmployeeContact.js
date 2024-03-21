@@ -11,13 +11,21 @@ export default class EmployeeContact extends Model {
         // Chama o método init da classe pai para definir os campos do modelo
         super.init({
             // Definição dos campos do model
-            email: DataTypes.STRING,
-            tel: DataTypes.STRING(15),
+            email: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: {msg: "Email de funcionário já existe."}
+            },
+            tel: {
+                type: DataTypes.STRING(15),
+                allowNull: false,
+                unique: {msg: "Telefone de funcionário já existe."}
+            },
             employee_id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 defaultValue: "",
-                validate: { isInt: {msg: "Id de funcionário inválido."} }
+                validate: {isInt: {msg: "Id de funcionário inválido."}}
             }
         }, {
             sequelize, // Opção para passar a conexão com o banco de dados
