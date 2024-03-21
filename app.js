@@ -1,6 +1,6 @@
-import express from 'express';
-import bodyParser from 'express';
-import './src/database/connection'; // Importa a conexão com|para os models
+import express from "express";
+import bodyParser from "express";
+import "./src/database/connection"; // Importa a conexão com|para os models
 import userTypes from "./src/routes/userTypes";
 import users from "./src/routes/users";
 import tokens from "./src/routes/tokens";
@@ -10,29 +10,29 @@ import employees from "./src/routes/employees";
 import patients from "./src/routes/patients";
 
 class App {
-    constructor() {
-        this.app = express();
-        this.middlewares();
-        this.routes();
-    }
+  constructor() {
+    this.app = express();
+    this.middlewares();
+    this.routes();
+  }
 
-    middlewares() {
-        this.app.use(bodyParser.json()); // Middleware para fazer converter o corpo da solicitação como JSON
-        // noinspection JSCheckFunctionSignatures
-        this.app.use(express.urlencoded({extended: true})); // Habilita a recepção de params na url
-        // noinspection JSCheckFunctionSignatures
-        this.app.use(express.json()); // habilita o uso de json
-    }
+  middlewares() {
+    this.app.use(bodyParser.json()); // Middleware para fazer converter o corpo da solicitação como JSON
+    // noinspection JSCheckFunctionSignatures
+    this.app.use(express.urlencoded({ extended: true })); // Habilita a recepção de params na url
+    // noinspection JSCheckFunctionSignatures
+    this.app.use(express.json()); // habilita o uso de json
+  }
 
-    routes() {
-        this.app.use('/tokens', tokens); // rota para gerir tokens
-        this.app.use('/user-types', userTypes); // rota para gerir tipos de usuários
-        this.app.use('/users', users); // rota para gerir usuários
-        this.app.use('/roles', roles); // rota para gerir cargos
-        this.app.use('/specialities', specialities); // rota para gerir especialidades
-        this.app.use('/employees', employees); // rota para gerir employees
-        this.app.use('/patients', patients); // rota para gerir pacientes
-    }
+  routes() {
+    this.app.use("/tokens", tokens); // rota para gerir tokens
+    this.app.use("/user-types", userTypes); // rota para gerir tipos de usuários
+    this.app.use("/users", users); // rota para gerir usuários
+    this.app.use("/roles", roles); // rota para gerir cargos
+    this.app.use("/specialities", specialities); // rota para gerir especialidades
+    this.app.use("/employees", employees); // rota para gerir employees
+    this.app.use("/patients", patients); // rota para gerir pacientes
+  }
 }
 
 export default new App().app; // Exporta o objecto da classe App
