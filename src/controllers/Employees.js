@@ -5,6 +5,7 @@ import isInt from "validator/lib/isInt";
 import errorHandler from "../middlewares/errorHandler";
 import Specialty from "../models/Specialty";
 import User from "../models/User";
+import EmployeeContact from "../models/EmployeeContact";
 
 class Employees {
     async index(req, res) {
@@ -44,6 +45,11 @@ class Employees {
                         model: Specialty,
                         as: "specialty",
                         attributes: ['id', 'name']
+                    },
+                    {
+                        model: EmployeeContact,
+                        as: "contacts",
+                        attributes: ['id', 'email', 'tel']
                     },
                     {
                         model: User,
