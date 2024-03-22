@@ -9,36 +9,36 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 autoIncrement: true,
-                primaryKey: true
+                primaryKey: true,
             },
             username: {
                 type: Sequelize.STRING(30),
                 allowNull: false,
-                unique: true
+                unique: true,
             },
             user_email: {
                 type: Sequelize.STRING,
                 allowNull: false,
-                unique: true
+                unique: true,
             },
             password_hash: {
                 type: Sequelize.STRING,
-                allowNull: false
+                allowNull: false,
             },
             user_type: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
                     model: 'user_types',
-                    key: 'id'
+                    key: 'id',
                 },
                 onDelete: 'RESTRICT',
-                onUpdate: 'CASCADE'
+                onUpdate: 'CASCADE',
             },
             active: {
                 type: Sequelize.TINYINT,
                 allowNull: false,
-                defaultValue: 1
+                defaultValue: 1,
             },
             created_by: {
                 type: Sequelize.INTEGER,
@@ -47,8 +47,8 @@ module.exports = {
                     model: 'users',
                     key: 'id',
                     onDelete: 'RESTRICT',
-                    onUpdate: 'CASCADE'
-                }
+                    onUpdate: 'CASCADE',
+                },
             },
             updated_by: {
                 type: Sequelize.INTEGER,
@@ -57,16 +57,16 @@ module.exports = {
                     model: 'users',
                     key: 'id',
                     onDelete: 'RESTRICT',
-                    onUpdate: 'CASCADE'
-                }
+                    onUpdate: 'CASCADE',
+                },
             },
             created_at: {
                 type: Sequelize.DATE,
-                allowNull: false
+                allowNull: false,
             },
             updated_at: {
                 type: Sequelize.DATE,
-                allowNull: false
+                allowNull: false,
             },
         });
 
@@ -79,5 +79,5 @@ module.exports = {
     // Desfaz a migration
     async down(queryInterface, Sequelize) {
         await queryInterface.dropTable('users');
-    }
+    },
 };

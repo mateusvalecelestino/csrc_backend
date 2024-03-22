@@ -1,6 +1,6 @@
-import httpStatusCode from "../utils/HttpStatusCode";
-import UserType from "../models/UserType";
-import errorHandler from "../middlewares/errorHandler";
+import httpStatusCode from '../utils/HttpStatusCode';
+import UserType from '../models/UserType';
+import errorHandler from '../middlewares/errorHandler';
 
 class UserTypes {
     async index(req, res) {
@@ -8,9 +8,10 @@ class UserTypes {
             // Carrega todos os tipos de usuários, apenas os campos passados como attributes
             const userTypes = await UserType.findAll({
                 attributes: ['id', 'name', 'desc'],
-                order: [['id', 'DESC']]
+                order: [['id', 'DESC']],
             });
-            if (!userTypes) return res.status(httpStatusCode.NO_CONTENT).json({});
+            if (!userTypes)
+                return res.status(httpStatusCode.NO_CONTENT).json({});
             return res.json(userTypes);
         } catch (error) {
             errorHandler(error, req, res);
@@ -18,4 +19,4 @@ class UserTypes {
     }
 }
 
-export default new UserTypes; // exporta o objecto da classe
+export default new UserTypes(); // exporta o objecto da classe

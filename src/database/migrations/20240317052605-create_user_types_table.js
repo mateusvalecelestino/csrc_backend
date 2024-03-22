@@ -8,22 +8,22 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 autoIncrement: true,
-                primaryKey: true
+                primaryKey: true,
             },
             name: {
                 type: Sequelize.STRING(30),
                 allowNull: false,
-                unique: true
+                unique: true,
             },
             desc: {
                 type: Sequelize.STRING(70),
                 allowNull: false,
-                unique: true
-            }
+                unique: true,
+            },
         });
     },
 
     async down(queryInterface, Sequelize) {
         await queryInterface.dropTable('user_types');
-    }
+    },
 };

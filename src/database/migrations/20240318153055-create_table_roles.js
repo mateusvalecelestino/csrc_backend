@@ -8,17 +8,17 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 autoIncrement: true,
-                primaryKey: true
+                primaryKey: true,
             },
             name: {
                 type: Sequelize.STRING(50),
                 allowNull: false,
-                unique: true
+                unique: true,
             },
             desc: {
                 type: Sequelize.STRING(500),
                 allowNull: false,
-                unique: true
+                unique: true,
             },
             created_by: {
                 type: Sequelize.INTEGER,
@@ -27,8 +27,8 @@ module.exports = {
                     model: 'users',
                     key: 'id',
                     onDelete: 'RESTRICT',
-                    onUpdate: 'CASCADE'
-                }
+                    onUpdate: 'CASCADE',
+                },
             },
             updated_by: {
                 type: Sequelize.INTEGER,
@@ -37,16 +37,16 @@ module.exports = {
                     model: 'users',
                     key: 'id',
                     onDelete: 'RESTRICT',
-                    onUpdate: 'CASCADE'
-                }
+                    onUpdate: 'CASCADE',
+                },
             },
             created_at: {
                 type: Sequelize.DATE,
-                allowNull: false
+                allowNull: false,
             },
             updated_at: {
                 type: Sequelize.DATE,
-                allowNull: false
+                allowNull: false,
             },
         });
 
@@ -58,5 +58,5 @@ module.exports = {
 
     async down(queryInterface, Sequelize) {
         await queryInterface.dropTable('roles');
-    }
+    },
 };

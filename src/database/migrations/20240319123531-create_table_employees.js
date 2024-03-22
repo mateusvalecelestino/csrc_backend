@@ -1,6 +1,6 @@
 'use strict';
 
-const {DataTypes} = require("sequelize");
+const { DataTypes } = require('sequelize');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     // Realiza a migration
@@ -10,15 +10,15 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 autoIncrement: true,
-                primaryKey: true
+                primaryKey: true,
             },
             full_name: {
                 type: Sequelize.STRING(100),
-                allowNull: false
+                allowNull: false,
             },
             birth_date: {
                 type: Sequelize.DATEONLY,
-                allowNull: false
+                allowNull: false,
             },
             gender: {
                 type: Sequelize.ENUM('M', 'F'),
@@ -27,7 +27,7 @@ module.exports = {
             order_number: {
                 type: Sequelize.STRING(30),
                 allowNull: false,
-                unique: true
+                unique: true,
             },
             role_id: {
                 type: Sequelize.INTEGER,
@@ -36,8 +36,8 @@ module.exports = {
                     model: 'roles',
                     key: 'id',
                     onDelete: 'RESTRICT',
-                    onUpdate: 'CASCADE'
-                }
+                    onUpdate: 'CASCADE',
+                },
             },
             specialty_id: {
                 type: Sequelize.INTEGER,
@@ -46,8 +46,8 @@ module.exports = {
                     model: 'specialties',
                     key: 'id',
                     onDelete: 'RESTRICT',
-                    onUpdate: 'CASCADE'
-                }
+                    onUpdate: 'CASCADE',
+                },
             },
             user_id: {
                 type: Sequelize.INTEGER,
@@ -56,14 +56,13 @@ module.exports = {
                     model: 'users',
                     key: 'id',
                     onDelete: 'RESTRICT',
-                    onUpdate: 'CASCADE'
-                }
-
+                    onUpdate: 'CASCADE',
+                },
             },
             active: {
                 type: Sequelize.TINYINT,
                 allowNull: false,
-                defaultValue: 1
+                defaultValue: 1,
             },
             created_by: {
                 type: Sequelize.INTEGER,
@@ -72,8 +71,8 @@ module.exports = {
                     model: 'users',
                     key: 'id',
                     onDelete: 'RESTRICT',
-                    onUpdate: 'CASCADE'
-                }
+                    onUpdate: 'CASCADE',
+                },
             },
             updated_by: {
                 type: Sequelize.INTEGER,
@@ -82,16 +81,16 @@ module.exports = {
                     model: 'users',
                     key: 'id',
                     onDelete: 'RESTRICT',
-                    onUpdate: 'CASCADE'
-                }
+                    onUpdate: 'CASCADE',
+                },
             },
             created_at: {
                 type: Sequelize.DATE,
-                allowNull: false
+                allowNull: false,
             },
             updated_at: {
                 type: Sequelize.DATE,
-                allowNull: false
+                allowNull: false,
             },
         });
 
@@ -104,5 +103,5 @@ module.exports = {
     // Desfaz a migration
     async down(queryInterface, Sequelize) {
         await queryInterface.dropTable('employees');
-    }
+    },
 };

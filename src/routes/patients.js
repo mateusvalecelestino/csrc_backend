@@ -1,9 +1,9 @@
-import {Router} from "express";
+import { Router } from 'express';
 import patientController from '../controllers/Patients';
-import auth from "../middlewares/auth";
-import getHandler from "../middlewares/getHandler";
-import recepcionista from "../middlewares/recepcionista"; // Importa o objecto controller de User
-const router = new Router;
+import auth from '../middlewares/auth';
+import getHandler from '../middlewares/getHandler';
+import recepcionista from '../middlewares/recepcionista'; // Importa o objecto controller de User
+const router = new Router();
 
 router.get('/', auth, recepcionista, getHandler, patientController.index);
 router.get('/:id', auth, recepcionista, patientController.show);

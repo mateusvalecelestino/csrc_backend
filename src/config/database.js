@@ -7,10 +7,10 @@ module.exports = {
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
-    define: {timestamps: true, underscored: true, underscoredAll: true},
+    define: { timestamps: true, underscored: true, underscoredAll: true },
     // Config. de timezone
     dialectOptions: {
-        timezone: process.env.TIMEZONE
+        timezone: process.env.TIMEZONE,
     },
-    timezone: process.env.TIMEZONE
+    timezone: process.env.TIMEZONE,
 };

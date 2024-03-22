@@ -1,10 +1,10 @@
-import {Router} from "express";
+import { Router } from 'express';
 import userController from '../controllers/Users';
-import auth from "../middlewares/auth";
-import admin from "../middlewares/admin";
-import updateUser from "../middlewares/updateUser";
-import getHandler from "../middlewares/getHandler"; // Importa o objecto controller de User
-const router = new Router;
+import auth from '../middlewares/auth';
+import admin from '../middlewares/admin';
+import updateUser from '../middlewares/updateUser';
+import getHandler from '../middlewares/getHandler'; // Importa o objecto controller de User
+const router = new Router();
 
 router.get('/', auth, admin, getHandler, userController.index);
 router.get('/:id', auth, admin, userController.show);
