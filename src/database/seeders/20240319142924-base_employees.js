@@ -23,7 +23,7 @@ module.exports = {
           full_name: "Administrador",
           birth_date: "2024-03-22",
           gender: "F",
-          order_number: "1234567890",
+          order_number: "1234567870",
           role_id: "1",
           specialty_id: "1",
           user_id: "1",

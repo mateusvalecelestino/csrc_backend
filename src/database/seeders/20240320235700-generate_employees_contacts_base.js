@@ -7,13 +7,13 @@ module.exports = {
       "employees_contacts",
       [
         {
-          email: "teste@teste.com",
+          email: "admin@admin.com",
           tel: "123-123-123",
           employee_id: "1",
         },
         {
-          email: "teste@teste.com",
-          tel: "123-123-123",
+          email: "recep@recep.com",
+          tel: "222-222-222",
           employee_id: "2",
         },
       ],
