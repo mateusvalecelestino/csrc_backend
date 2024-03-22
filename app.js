@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "express";
+import cors from "cors";
 import "./src/database/connection"; // Importa a conexão com|para os models
 import userTypes from "./src/routes/userTypes";
 import users from "./src/routes/users";
@@ -9,6 +10,15 @@ import specialities from "./src/routes/specialities";
 import employees from "./src/routes/employees";
 import patients from "./src/routes/patients";
 
+// Lista de endereços permitidos
+const allowedOrigins = ["http://localhost:3000"];
+
+// Config. do cors
+const corsOptions = {
+  origin: allowedOrigins, // Permitir acesso apenas de endereços permitidos
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Permitir apenas estes métodos HTTP
+};
+
 class App {
   constructor() {
     this.app = express();
@@ -17,11 +27,9 @@ class App {
   }
 
   middlewares() {
-    this.app.use(bodyParser.json()); // Middleware para fazer converter o corpo da solicitação como JSON
-    // noinspection JSCheckFunctionSignatures
-    this.app.use(express.urlencoded({ extended: true })); // Habilita a recepção de params na url
-    // noinspection JSCheckFunctionSignatures
-    this.app.use(express.json()); // habilita o uso de json
+    this.app.use(cors(corsOptions));
+    this.app.use(bodyParser.json()); // Middleware para analisar o corpo das solicitações
+    this.app.use(bodyParser.urlencoded({ extended: true })); // Habilita a recepção de params na url
   }
 
   routes() {
