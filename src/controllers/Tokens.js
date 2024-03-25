@@ -13,13 +13,13 @@ class Tokens {
             const regExStrongPassword =
                 /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,255})/g;
             const authErrorMessage = {
-                message: 'email e/ou senha são inválidos!',
+                message: 'email e/ou senha inválidos!',
             };
 
             if (!user_email || !password)
                 return res
                     .status(httpStatusCode.BAD_REQUEST)
-                    .json({ message: 'email e senha são obrigatórios!' });
+                    .json({ message: 'email e senha obrigatórios!' });
 
             // Verifica se é um user_email válido ou se a senha é forte
             if (!isEmail(user_email) || !regExStrongPassword.test(password))
