@@ -15,32 +15,32 @@ const allowedOrigins = ['http://localhost:3000'];
 
 // Config. do cors
 const corsOptions = {
-    origin: allowedOrigins, // Permitir acesso apenas de endereços permitidos
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Permitir apenas estes métodos HTTP
+  origin: allowedOrigins, // Permitir acesso apenas de endereços permitidos
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Permitir apenas estes métodos HTTP
 };
 
 class App {
-    constructor() {
-        this.app = express();
-        this.middlewares();
-        this.routes();
-    }
+  constructor() {
+    this.app = express();
+    this.middlewares();
+    this.routes();
+  }
 
-    middlewares() {
-        this.app.use(cors(corsOptions));
-        this.app.use(bodyParser.json()); // Middleware para analisar o corpo das solicitações
-        this.app.use(bodyParser.urlencoded({ extended: true })); // Habilita a recepção de params na url
-    }
+  middlewares() {
+    this.app.use(cors(corsOptions));
+    this.app.use(bodyParser.json()); // Middleware para analisar o corpo das solicitações
+    this.app.use(bodyParser.urlencoded({ extended: true })); // Habilita a recepção de params na url
+  }
 
-    routes() {
-        this.app.use('/tokens', tokens); // rota para gerir tokens
-        this.app.use('/user-types', userTypes); // rota para gerir tipos de usuários
-        this.app.use('/users', users); // rota para gerir usuários
-        this.app.use('/roles', roles); // rota para gerir cargos
-        this.app.use('/specialities', specialities); // rota para gerir especialidades
-        this.app.use('/employees', employees); // rota para gerir employees
-        this.app.use('/patients', patients); // rota para gerir pacientes
-    }
+  routes() {
+    this.app.use('/tokens', tokens); // rota para gerir tokens
+    this.app.use('/user-types', userTypes); // rota para gerir tipos de usuários
+    this.app.use('/users', users); // rota para gerir usuários
+    this.app.use('/roles', roles); // rota para gerir cargos
+    this.app.use('/specialities', specialities); // rota para gerir especialidades
+    this.app.use('/employees', employees); // rota para gerir employees
+    this.app.use('/patients', patients); // rota para gerir pacientes
+  }
 }
 
 export default new App().app; // Exporta o objecto da classe App
