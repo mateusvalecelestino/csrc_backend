@@ -83,8 +83,8 @@ class Patients {
       delete req.body.updated_at;
 
       // Adição dos dados do criador
-      req.body.created_by = req.userEmployee.id;
-      req.body.updated_by = req.userEmployee.id;
+      req.body.created_by = req.employee;
+      req.body.updated_by = req.employee;
 
       // Busca ou cria o paciente
       const [patient, created] = await Patient.findOrCreate({
@@ -170,7 +170,7 @@ class Patients {
         });
 
       // Adição dos dados do actualizador
-      req.body.updated_by = req.userEmployee.id;
+      req.body.updated_by = req.employee;
 
       // Update do patient
       await patient.update(req.body, { transaction: t });
